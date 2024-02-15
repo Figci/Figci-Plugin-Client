@@ -30,6 +30,11 @@ module.exports = {
   },
   settings: { react: { version: "detect" } },
   plugins: ["react", "prettier", "react-hooks"],
+  globals: {
+    figma: false,
+    __html__: false,
+    message: false,
+  },
   rules: {
     semi: "warn",
     "no-unused-vars": "warn",
