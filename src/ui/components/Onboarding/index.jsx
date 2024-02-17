@@ -7,6 +7,7 @@ import Button from "../shared/Button";
 
 import figciLogo from "../../../../assets/logo_figci.png";
 import { openAuth, getToken } from "../../../services/getAuth";
+import postMessage from "../../../utils/postMessage";
 
 function Onboarding() {
   const navigate = useNavigate();
@@ -43,15 +44,7 @@ function Onboarding() {
 
   useEffect(() => {
     if (accessToken) {
-      window.parent.postMessage(
-        {
-          pluginMessage: {
-            type: "SAVE_ACCESS_TOKEN",
-            accessToken,
-          },
-        },
-        "*",
-      );
+      postMessage("SAVE_ACCESS_TOKEN", accessToken);
 
       navigate("/new");
     }
