@@ -30,16 +30,19 @@ const fadeInUp = keyframes`
 `;
 
 const Toast = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 2;
   top: 85%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
 
   display: flex;
   justify-content: center;
   align-items: center;
   width: 80%;
-  height: 70px;
-  border-radius: 20px;
+  height: 44px;
+  border-radius: 8px;
 
   animation: ${fadeInUp} 0.5s ease-in-out;
 
@@ -47,7 +50,7 @@ const Toast = styled.div`
   background-color: #000000;
   color: #ffffff;
   font-family: "Noto Sans KR";
-  font-size: 1.125rem;
+  font-size: 0.75rem;
   text-align: center;
   font-weight: 700;
 `;
