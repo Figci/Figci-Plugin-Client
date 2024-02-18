@@ -4,12 +4,11 @@ import styled from "styled-components";
 
 import Button from "../shared/Button";
 import ToastPopup from "../shared/Toast";
-import Modal from "../shared/Modal";
-import Loading from "../shared/Loading";
 
 import useProjectStore from "../../../store/project";
 import useProjectVersionStore from "../../../store/projectVersion";
 import usePageListStore from "../../../store/projectPage";
+
 import getLastVersion from "../../../utils/getLastVersion";
 import getCommonPages from "../../../service/getCommonPages";
 
@@ -29,10 +28,6 @@ function ProjectVersion() {
     clearPages();
   }, []);
 
-  const lastVersion = getLastVersion(allDates, byDates);
-
-  setProjectVersion(lastVersion);
-
   const handleChange = ev => {
     setProjectVersion({
       ...projectVersion,
@@ -48,6 +43,10 @@ function ProjectVersion() {
 
       return;
     }
+
+    const lastVersion = getLastVersion(allDates, byDates);
+
+    setProjectVersion(lastVersion);
 
     const { beforeDate, beforeVersion, afterDate, afterVersion } =
       projectVersion;
@@ -113,11 +112,6 @@ function ProjectVersion() {
 
   return (
     <>
-      {isLoaded && (
-        <Modal>
-          <Loading />
-        </Modal>
-      )}
       <ContentsWrapper>
         <div>
           <h1 className="step">STEP 02</h1>
@@ -153,11 +147,16 @@ function ProjectVersion() {
             </p>
           </label>
           <div className="buttons">
-            <Button usingCase="line" size="small" className="prev">
+            <Button
+              handleClick={handleClick}
+              usingCase="line"
+              size="small"
+              className="prev"
+            >
               이전
             </Button>
             <Button
-              onClick={handleClick}
+              handleClick={handleClick}
               usingCase="solid"
               size="small"
               className="next"
