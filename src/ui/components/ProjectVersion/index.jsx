@@ -15,7 +15,7 @@ import getCommonPages from "../../../service/getCommonPages";
 function ProjectVersion() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [toast, setToast] = useState({});
-  const [projectVersion, setProjectVersion] = useState({});
+  const [beforeVersionInfo, setBeforeVersionInfo] = useState({});
 
   const navigate = useNavigate();
 
@@ -29,8 +29,8 @@ function ProjectVersion() {
   }, []);
 
   const handleChange = ev => {
-    setProjectVersion({
-      ...projectVersion,
+    setBeforeVersionInfo({
+      ...beforeVersionInfo,
       [ev.currentTarget.className]: ev.target.value,
     });
   };
@@ -44,12 +44,9 @@ function ProjectVersion() {
       return;
     }
 
-    const lastVersion = getLastVersion(allDates, byDates);
-
-    setProjectVersion(lastVersion);
-
-    const { beforeDate, beforeVersion, afterDate, afterVersion } =
-      projectVersion;
+    const { beforeDate, beforeVersion } = beforeVersionInfo;
+    const lastVersionInfo = getLastVersion(allDates, byDates);
+    const { afterDate, afterVersion } = lastVersionInfo;
 
     if (!(beforeVersion && afterVersion)) {
       setToast({ status: true, message: "선택하지 않은 버전이 존재합니다." });
@@ -71,8 +68,10 @@ function ProjectVersion() {
       return;
     }
 
-    setProject(projectVersion);
+    setProject({ ...beforeVersionInfo, ...lastVersionInfo });
     setIsLoaded(true);
+
+    console.log(project.projectKey, beforeVersion, afterVersion);
 
     const pageList = await getCommonPages(
       project.projectKey,
@@ -139,8 +138,8 @@ function ProjectVersion() {
               <option value="" disabled selected>
                 버전 선택
               </option>
-              {projectVersion.beforeDate &&
-                createOption(byDates[projectVersion.beforeDate])}
+              {beforeVersionInfo.beforeDate &&
+                createOption(byDates[beforeVersionInfo.beforeDate])}
             </select>
             <p className="description">
               지정한 버전 명이 없으면 시간으로 보여요!
