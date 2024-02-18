@@ -13,10 +13,10 @@ import isValidFigmaUrl from "../../../utils/isValidFigmaUrl";
 import postMessage from "../../../utils/postMessage";
 
 function NewProject() {
+  const navigate = useNavigate();
+
   const { project, setProject, clearProject } = useProjectStore();
   const { setVersion, clearVersion } = useProjectVersionStore();
-
-  const navigate = useNavigate();
 
   const [inputValue, setInputValue] = useState(null);
   const [toast, setToast] = useState(false);
@@ -36,14 +36,13 @@ function NewProject() {
       const projectKey = getProjectKeyFromURI(inputValue);
 
       const allVersions = await getAllVersions(projectKey, token);
+      const projectUrl = inputValue;
 
       if (allVersions.result === "error") {
         setToast({ status: true, message: allVersions.message });
 
         return;
       }
-
-      const projectUrl = inputValue;
 
       setProject({ projectKey, projectUrl });
       setVersion(allVersions.content);
