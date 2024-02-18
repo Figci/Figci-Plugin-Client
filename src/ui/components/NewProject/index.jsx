@@ -7,19 +7,18 @@ import ToastPopup from "../shared/Toast";
 
 import useProjectStore from "../../../store/project";
 import useProjectVersionStore from "../../../store/projectVersion";
+
 import getProjectKeyFromURI from "../../../utils/getProjectKeyfromURI";
-import getAllVersions from "../../../service/getAllVersions";
 import isValidFigmaUrl from "../../../utils/isValidFigmaUrl";
 import postMessage from "../../../utils/postMessage";
+import getAllVersions from "../../../service/getAllVersions";
 
 function NewProject() {
   const navigate = useNavigate();
+  const [toast, setToast] = useState(false);
 
   const { project, setProject, clearProject } = useProjectStore();
   const { setVersion, clearVersion } = useProjectVersionStore();
-
-  const [inputValue, setInputValue] = useState(null);
-  const [toast, setToast] = useState(false);
 
   useEffect(() => {
     clearProject();
@@ -27,16 +26,14 @@ function NewProject() {
   }, []);
 
   const handleChangeInput = ev => {
-    setInputValue(ev.target.value);
+    setProject({ projectUrl: ev.target.value });
   };
 
   const handleMessage = async ev => {
     if (ev.data.pluginMessage.type === "GET_ACCESS_TOKEN") {
       const token = ev.data.pluginMessage.content;
-      const projectKey = getProjectKeyFromURI(inputValue);
-
+      const projectKey = getProjectKeyFromURI(project.projectUrl);
       const allVersions = await getAllVersions(projectKey, token);
-      const projectUrl = inputValue;
 
       if (allVersions.result === "error") {
         setToast({ status: true, message: allVersions.message });
@@ -44,7 +41,7 @@ function NewProject() {
         return;
       }
 
-      setProject({ projectKey, projectUrl });
+      setProject({ projectKey });
       setVersion(allVersions.content);
 
       navigate("/version");
@@ -57,12 +54,12 @@ function NewProject() {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, [inputValue]);
+  }, [project.projectUrl]);
 
   const handleSubmitURI = async ev => {
     ev.preventDefault();
 
-    if (!isValidFigmaUrl(inputValue)) {
+    if (!isValidFigmaUrl(project.projectUrl)) {
       setToast({
         status: true,
         message: "피그마 파일 URL 주소가 아니에요. 다시 입력해주세요🥲",
@@ -89,21 +86,19 @@ function NewProject() {
             피그마 프로젝트 URL 입력
             <input
               id="projectUrl"
-              defaultValue={inputValue}
+              defaultValue={project.projectUrl}
               placeholder="url 주소를 입력해주세요. (예: www.figma.com/abc)"
               onChange={handleChangeInput}
             />
           </label>
-          <div className="buttons">
-            <Button
-              handleClick={handleSubmitURI}
-              usingCase="solid"
-              size="small"
-              className="next"
-            >
-              다음
-            </Button>
-          </div>
+          <Button
+            handleClick={handleSubmitURI}
+            usingCase="solid"
+            size="small"
+            className="next"
+          >
+            다음
+          </Button>
         </form>
       </ContentsWrapper>
       {toast.status && (
@@ -173,16 +168,6 @@ const ContentsWrapper = styled.div`
 
   Button {
     width: 100%;
-  }
-
-  .description {
-    display: block;
-
-    color: #868e96;
-    font-size: 1rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px;
   }
 `;
 
