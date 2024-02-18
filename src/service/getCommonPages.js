@@ -1,9 +1,12 @@
 import generateApiUri from "../utils/generateURI";
 
-const getCommonPages = async (projectKey, beforeVersion, afterVersion) => {
+const getCommonPages = async (
+  projectKey,
+  beforeVersion,
+  afterVersion,
+  token,
+) => {
   const baseURI = import.meta.env.VITE_BACKEND_BASE_API_URI;
-
-  const token = JSON.parse(localStorage.getItem("FigmaToken")).access_token;
 
   const queryParams = {
     "before-version": beforeVersion,
