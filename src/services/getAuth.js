@@ -24,9 +24,9 @@ const getToken = async () => {
   const API_URI = generateApiUri(serverURI, "oauth/accesstoken");
 
   const response = await fetch(API_URI, { method: "GET" });
-  const { accessToken } = await response.json();
+  const responseJSON = await response.json();
 
-  return accessToken;
+  return responseJSON;
 };
 
 export { openAuth, getToken };

@@ -23,7 +23,7 @@ function Onboarding() {
 
   const getTokenPolling = () => {
     const pollingId = setInterval(async () => {
-      const accessToken = await getToken();
+      const { content: accessToken } = await getToken();
 
       if (accessToken) {
         setAccessToken(accessToken);
