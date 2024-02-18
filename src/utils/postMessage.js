@@ -1,4 +1,4 @@
-const postMessage = (type, content, origin = "*") => {
+const postMessage = (type, content = null, origin = "*") => {
   window.parent.postMessage(
     {
       pluginMessage: {
