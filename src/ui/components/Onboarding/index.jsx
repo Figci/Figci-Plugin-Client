@@ -8,6 +8,7 @@ import Button from "../shared/Button";
 import figciLogo from "../../../../assets/logo_figci.png";
 import { openAuth, getToken } from "../../../services/getAuth";
 import postMessage from "../../../utils/postMessage";
+import DELAY_TIME from "../../../constants/timeConstants";
 
 function Onboarding() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function Onboarding() {
         setAccessToken(accessToken);
         clearInterval(pollingId);
       }
-    }, 2000);
+    }, DELAY_TIME.POLLING);
   };
 
   useEffect(() => {
@@ -74,8 +75,8 @@ const Description = styled.span`
   display: block;
   margin-bottom: 36px;
 
-  font-size: 1rem;
   color: #343e40;
+  font-size: 1rem;
   text-align: center;
   line-height: 24px;
 `;
