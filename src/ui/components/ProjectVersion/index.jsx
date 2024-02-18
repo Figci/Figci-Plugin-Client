@@ -71,8 +71,6 @@ function ProjectVersion() {
     setProject({ ...beforeVersionInfo, ...lastVersionInfo });
     setIsLoaded(true);
 
-    console.log(project.projectKey, beforeVersion, afterVersion);
-
     const pageList = await getCommonPages(
       project.projectKey,
       beforeVersion,
