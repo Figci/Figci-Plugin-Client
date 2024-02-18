@@ -1,5 +1,27 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+import figciLogo from "../../../../assets/logo_figci.png";
+
 function Header() {
-  return <h1>Header</h1>;
+  return (
+    <HeadWrapper>
+      <Link to="/">
+        <img className="logo" src={figciLogo} alt="figci-logo-img" />
+      </Link>
+    </HeadWrapper>
+  );
 }
+
+const HeadWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 32px 24px;
+
+  .logo {
+    height: 20px;
+  }
+`;
 
 export default Header;
