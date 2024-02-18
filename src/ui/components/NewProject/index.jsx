@@ -10,6 +10,7 @@ import useProjectVersionStore from "../../../store/projectVersion";
 import getProjectKeyFromURI from "../../../utils/getProjectKeyfromURI";
 import getAllVersions from "../../../service/getAllVersions";
 import isValidFigmaUrl from "../../../utils/isValidFigmaUrl";
+import postMessage from "../../../utils/postMessage";
 
 function NewProject() {
   const { project, setProject, clearProject } = useProjectStore();
@@ -17,7 +18,7 @@ function NewProject() {
 
   const navigate = useNavigate();
 
-  const [inputValue, setInputValue] = useState(project.projectUrl);
+  const [inputValue, setInputValue] = useState(null);
   const [toast, setToast] = useState(false);
 
   useEffect(() => {
@@ -28,6 +29,36 @@ function NewProject() {
   const handleChangeInput = ev => {
     setInputValue(ev.target.value);
   };
+
+  const handleMessage = async ev => {
+    if (ev.data.pluginMessage.type === "GET_ACCESS_TOKEN") {
+      const token = ev.data.pluginMessage.content;
+      const projectKey = getProjectKeyFromURI(inputValue);
+
+      const allVersions = await getAllVersions(projectKey, token);
+
+      if (allVersions.result === "error") {
+        setToast({ status: true, message: allVersions.message });
+
+        return;
+      }
+
+      const projectUrl = inputValue;
+
+      setProject({ projectKey, projectUrl });
+      setVersion(allVersions.content);
+
+      navigate("/version");
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [inputValue]);
 
   const handleSubmitURI = async ev => {
     ev.preventDefault();
@@ -41,20 +72,7 @@ function NewProject() {
       return;
     }
 
-    const projectKey = getProjectKeyFromURI(inputValue);
-    const allVersions = await getAllVersions(projectKey);
-    const projectUrl = inputValue;
-
-    if (allVersions.result === "error") {
-      setToast({ status: true, message: "allVersions.message" });
-
-      return;
-    }
-
-    setProject({ projectKey, projectUrl });
-    setVersion(allVersions.content);
-
-    navigate("/version");
+    postMessage("GET_ACCESS_TOKEN");
   };
 
   return (
