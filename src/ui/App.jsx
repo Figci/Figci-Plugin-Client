@@ -2,10 +2,9 @@ import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { Reset } from "styled-reset";
 
 import Layout from "./components/Layout";
+import Login from "./components/Login";
 import Onboarding from "./components/Onboarding";
-import NewProject from "./components/NewProject";
 import ProjectVersion from "./components/ProjectVersion";
-import ProjectPage from "./components/ProjectPage";
 import Difference from "./components/Difference";
 
 function App() {
@@ -13,13 +12,12 @@ function App() {
     <MemoryRouter initialEntries={["/"]}>
       <Reset />
       <Routes>
-        <Route path="/" exact element={<Onboarding />} />
+        <Route path="/" exact element={<Login />} />
+        <Route path="/onboarding" exact element={<Onboarding />} />
         <Route element={<Layout />}>
-          <Route path="/new" element={<NewProject />} />
           <Route path="/version" element={<ProjectVersion />} />
-          <Route path="/page" element={<ProjectPage />} />
+          <Route path="/result" element={<Difference />} />
         </Route>
-        <Route path="/result" element={<Difference />} />
       </Routes>
     </MemoryRouter>
   );
