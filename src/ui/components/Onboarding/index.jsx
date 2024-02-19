@@ -16,7 +16,7 @@ import onboarding from "../../../../assets/onboarding.png";
 function Onboarding() {
   const navigate = useNavigate();
   const [projectInformation, setProjectInformation] = useState({});
-  const [toast, setToast] = useState("");
+  const [toast, setToast] = useState({});
 
   const { setVersion, clearVersion } = useProjectVersionStore();
   const { setProject } = useProjectStore();
