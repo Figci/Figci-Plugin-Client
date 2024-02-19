@@ -2,8 +2,8 @@ import { create } from "zustand";
 
 const projectStore = set => ({
   project: {
-    beforeVersion: null,
-    afterVersion: null,
+    beforeVersionId: null,
+    afterVersionId: null,
   },
   setProject: newProject =>
     set(state => ({
@@ -17,8 +17,8 @@ const projectStore = set => ({
     set(state => ({
       ...state,
       project: {
-        beforeVersion: null,
-        afterVersion: null,
+        beforeVersionId: null,
+        afterVersionId: null,
       },
     })),
 });
