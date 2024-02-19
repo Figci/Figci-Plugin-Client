@@ -12,7 +12,7 @@ const BUTTON_SIZES = {
   `,
   medium: css`
     --button-min-width: 350px;
-    --button-min-height: 45px;
+    --button-min-height: 52px;
     --button-font-size: 0.875rem;
     --button-padding: 12px 24px;
     --button-border: 1px solid #000000;
