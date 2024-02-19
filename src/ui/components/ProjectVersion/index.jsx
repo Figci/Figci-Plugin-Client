@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Button from "../shared/Button";
+import Description from "../shared/Description";
 import ToastPopup from "../shared/Toast";
 
 import useProjectStore from "../../../store/project";
@@ -13,11 +14,11 @@ import getLastVersion from "../../../utils/getLastVersion";
 import getCommonPages from "../../../service/getCommonPages";
 
 function ProjectVersion() {
+  const navigate = useNavigate();
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [toast, setToast] = useState({});
   const [beforeVersionInfo, setBeforeVersionInfo] = useState({});
-
-  const navigate = useNavigate();
 
   const { project, setProject, clearProjectVersion } = useProjectStore();
   const { allDates, byDates } = useProjectVersionStore();
@@ -27,6 +28,49 @@ function ProjectVersion() {
     clearProjectVersion();
     clearPages();
   }, []);
+
+  const validateVersions = (
+    beforeVersion,
+    beforeDate,
+    afterDate,
+    afterVersion,
+  ) => {
+    if (!(beforeVersion && afterVersion)) {
+      setToast({ status: true, message: "선택하지 않은 버전이 존재합니다." });
+
+      return;
+    }
+
+    const beforeCreatedAt = new Date(
+      byDates[beforeDate][beforeVersion].createdAt,
+    );
+    const afterCreatedAt = new Date(byDates[afterDate][afterVersion].createdAt);
+
+    if (beforeCreatedAt >= afterCreatedAt) {
+      setToast({
+        status: true,
+        message: "이후 버전은 이전 버전보다 나중이여야 합니다.",
+      });
+
+      return;
+    }
+  };
+
+  const createOption = versions => {
+    const optionList = [];
+
+    for (const versionId in versions) {
+      const versionTitle = versions[versionId].label;
+
+      optionList.push(
+        <option value={versionId} key={versionId}>
+          {versionTitle}
+        </option>,
+      );
+    }
+
+    return optionList;
+  };
 
   const handleChange = ev => {
     setBeforeVersionInfo({
@@ -48,25 +92,7 @@ function ProjectVersion() {
     const lastVersionInfo = getLastVersion(allDates, byDates);
     const { afterDate, afterVersion } = lastVersionInfo;
 
-    if (!(beforeVersion && afterVersion)) {
-      setToast({ status: true, message: "선택하지 않은 버전이 존재합니다." });
-
-      return;
-    }
-
-    const beforeCreatedAt = new Date(
-      byDates[beforeDate][beforeVersion].createdAt,
-    );
-    const afterCreatedAt = new Date(byDates[afterDate][afterVersion].createdAt);
-
-    if (beforeCreatedAt >= afterCreatedAt) {
-      setToast({
-        status: true,
-        message: "이후 버전은 이전 버전보다 나중이여야 합니다.",
-      });
-
-      return;
-    }
+    validateVersions(beforeDate, beforeVersion, afterDate, afterVersion);
 
     setProject({ ...beforeVersionInfo, ...lastVersionInfo });
     setIsLoaded(true);
@@ -79,7 +105,6 @@ function ProjectVersion() {
 
     if (pageList.result === "error") {
       setIsLoaded(false);
-
       setToast({ statue: true, message: pageList.message });
 
       navigate("/new");
@@ -89,22 +114,6 @@ function ProjectVersion() {
     setIsLoaded(false);
 
     navigate("/page");
-  };
-
-  const createOption = versions => {
-    const optionList = [];
-
-    for (const versionId in versions) {
-      const versionTitle = versions[versionId].label;
-
-      optionList.push(
-        <option value={versionId} key={versionId}>
-          {versionTitle}
-        </option>,
-      );
-    }
-
-    return optionList;
   };
 
   return (
@@ -139,9 +148,12 @@ function ProjectVersion() {
               {beforeVersionInfo.beforeDate &&
                 createOption(byDates[beforeVersionInfo.beforeDate])}
             </select>
-            <p className="description">
-              지정한 버전 명이 없으면 시간으로 보여요!
-            </p>
+            <Description
+              className="description"
+              size="medium"
+              align="left"
+              text="지정한 버전 명이 없으면 시간으로 보여요!"
+            />
           </label>
           <div className="buttons">
             <Button
@@ -205,7 +217,7 @@ const ContentsWrapper = styled.div`
     height: 100%;
 
     color: #000000;
-    font-size: 0.75rem;
+    font-size: 0.813rem;
     text-align: left;
     line-height: 16px;
     font-weight: 700;
@@ -224,10 +236,6 @@ const ContentsWrapper = styled.div`
     margin-top: 12px;
 
     color: #868e96;
-    font-size: 0.75rem;
-    line-height: 16px;
-    text-align: left;
-    font-weight: 500;
   }
 
   .buttons {
