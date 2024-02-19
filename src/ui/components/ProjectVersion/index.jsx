@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import styled from "styled-components";
 
 import Button from "../shared/Button";
@@ -8,113 +7,15 @@ import ToastPopup from "../shared/Toast";
 
 import useProjectStore from "../../../store/project";
 import useProjectVersionStore from "../../../store/projectVersion";
-import usePageListStore from "../../../store/projectPage";
-
-import getLastVersion from "../../../utils/getLastVersion";
-import getCommonPages from "../../../service/getCommonPages";
 
 function ProjectVersion() {
-  const navigate = useNavigate();
-
-  const [isLoaded, setIsLoaded] = useState(false);
   const [toast, setToast] = useState({});
-  const [beforeVersionInfo, setBeforeVersionInfo] = useState({});
 
-  const { project, setProject, clearProjectVersion } = useProjectStore();
-  const { allDates, byDates } = useProjectVersionStore();
-  const { setPages, clearPages } = usePageListStore();
+  const { project, setProject, clearProject } = useProjectStore();
+  const { byDates, allDates } = useProjectVersionStore();
 
-  useEffect(() => {
-    clearProjectVersion();
-    clearPages();
-  }, []);
-
-  const validateVersions = (
-    beforeVersion,
-    beforeDate,
-    afterDate,
-    afterVersion,
-  ) => {
-    if (!(beforeVersion && afterVersion)) {
-      setToast({ status: true, message: "선택하지 않은 버전이 존재합니다." });
-
-      return;
-    }
-
-    const beforeCreatedAt = new Date(
-      byDates[beforeDate][beforeVersion].createdAt,
-    );
-    const afterCreatedAt = new Date(byDates[afterDate][afterVersion].createdAt);
-
-    if (beforeCreatedAt >= afterCreatedAt) {
-      setToast({
-        status: true,
-        message: "이후 버전은 이전 버전보다 나중이여야 합니다.",
-      });
-
-      return;
-    }
-  };
-
-  const createOption = versions => {
-    const optionList = [];
-
-    for (const versionId in versions) {
-      const versionTitle = versions[versionId].label;
-
-      optionList.push(
-        <option value={versionId} key={versionId}>
-          {versionTitle}
-        </option>,
-      );
-    }
-
-    return optionList;
-  };
-
-  const handleChange = ev => {
-    setBeforeVersionInfo({
-      ...beforeVersionInfo,
-      [ev.currentTarget.className]: ev.target.value,
-    });
-  };
-
-  const handleClick = async ev => {
-    ev.preventDefault();
-
-    if (ev.target.classList.contains("prev")) {
-      navigate("/new");
-
-      return;
-    }
-
-    const { beforeDate, beforeVersion } = beforeVersionInfo;
-    const lastVersionInfo = getLastVersion(allDates, byDates);
-    const { afterDate, afterVersion } = lastVersionInfo;
-
-    validateVersions(beforeDate, beforeVersion, afterDate, afterVersion);
-
-    setProject({ ...beforeVersionInfo, ...lastVersionInfo });
-    setIsLoaded(true);
-
-    const pageList = await getCommonPages(
-      project.projectKey,
-      beforeVersion,
-      afterVersion,
-    );
-
-    if (pageList.result === "error") {
-      setIsLoaded(false);
-      setToast({ statue: true, message: pageList.message });
-
-      navigate("/new");
-    }
-
-    setPages(pageList.content);
-    setIsLoaded(false);
-
-    navigate("/page");
-  };
+  const handleChange = () => {};
+  const handleClick = () => {};
 
   return (
     <>
@@ -145,8 +46,6 @@ function ProjectVersion() {
               <option value="" disabled selected>
                 버전 선택
               </option>
-              {beforeVersionInfo.beforeDate &&
-                createOption(byDates[beforeVersionInfo.beforeDate])}
             </select>
             <Description
               className="description"
@@ -236,13 +135,6 @@ const ContentsWrapper = styled.div`
     margin-top: 12px;
 
     color: #868e96;
-  }
-
-  .buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 12px;
-    margin-top: 48px;
   }
 `;
 
