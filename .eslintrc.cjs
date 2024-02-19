@@ -53,5 +53,6 @@ module.exports = {
     "guard-for-in": "off",
     "consistent-return": "off",
     "no-shadow": "off",
+    "no-case-declarations": "off",
   },
 };
