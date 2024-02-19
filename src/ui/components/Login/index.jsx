@@ -60,14 +60,14 @@ function Login() {
         디자인 화면의 변경사항을 한눈에 보여드려요!
       </Description>
       <Button className="login-button" handleClick={onLoginClick} size="medium">
-        로그인 하기
+        피그마 계정으로 로그인
       </Button>
     </Container>
   );
 }
 
 const LogoImage = styled.img`
-  width: 145px;
+  width: 120px;
   margin-bottom: 24px;
 `;
 
