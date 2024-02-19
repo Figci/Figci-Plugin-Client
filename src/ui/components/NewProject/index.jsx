@@ -160,7 +160,7 @@ const ContentsWrapper = styled.div`
     height: 100%;
 
     color: #000000;
-    font-size: 0.75rem;
+    font-size: 0.813rem;
     text-align: left;
     line-height: 16px;
     font-weight: 700;
