@@ -8,7 +8,7 @@ import Button from "../shared/Button";
 import figciLogo from "../../../../assets/logo_figci.png";
 import { openAuth, getToken } from "../../../services/getAuth";
 import postMessage from "../../../utils/postMessage";
-import DELAY_TIME from "../../../constants/timeConstants";
+import CONFIG from "../../../constants/config";
 
 function Login() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function Login() {
         setAccessToken(accessToken);
         clearInterval(pollingId);
       }
-    }, DELAY_TIME.POLLING);
+    }, CONFIG.DELAY_TIME_POLLING);
   };
 
   useEffect(() => {
