@@ -37,7 +37,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
           differenceRectangle.fills = [CONSTANTS.NEW_FILLS];
           differenceRectangle.setPluginData(
             "differenceInformation",
-            "선택하신 이전 버전에는 존재하지 않는 노드 입니다!",
+            "선택하신 이전 버전에는 존재하지 않는 노드입니다!",
           );
 
           break;
@@ -71,7 +71,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
         differenceRectangle.opacity = CONSTANTS.RECT_OPACITY;
         differenceRectangle.setPluginData(
           "differenceInformation",
-          "선택하신 이전 버전에는 존재하지 않는 프레임 입니다!",
+          "선택하신 이전 버전에는 존재하지 않는 프레임입니다!",
         );
 
         differenceRectangleIdList.push(differenceRectangle.id);
@@ -133,8 +133,8 @@ figma.ui.onmessage = async message => {
 };
 
 figma.on("close", () => {
-  differenceRectangleIdList.forEach(rectangleId => {
-    const rectangleNode = figma.getNodeById(rectangleId);
+  differenceRectangleIdList.forEach(rectangleNodeId => {
+    const rectangleNode = figma.getNodeById(rectangleNodeId);
 
     rectangleNode.remove();
   });
