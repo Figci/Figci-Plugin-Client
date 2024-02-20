@@ -1,10 +1,9 @@
-const NEW_NODE = "이전 버전엔 없던 새로운 요소이에요!";
-const NEW_FRAME = "이전 버전엔 없던 새로운 프레임이에요!";
+import CONFIG from "../constants/config";
 
 const processDifferences = ({ differenceInformation }) => {
   if (
-    differenceInformation === NEW_NODE ||
-    differenceInformation === NEW_FRAME
+    differenceInformation === CONFIG.NEW_NODE ||
+    differenceInformation === CONFIG.NEW_FRAME
   ) {
     return { text: differenceInformation, className: "active" };
   }
