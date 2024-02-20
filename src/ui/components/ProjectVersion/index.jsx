@@ -12,6 +12,7 @@ import useProjectVersionStore from "../../../store/projectVersion";
 import postMessage from "../../../utils/postMessage";
 import createOption from "../../../utils/createOption";
 import isCommonPage from "../../../utils/isCommonPage";
+import isOwnProperty from "../../../utils/isOwnProperty";
 import getCommonPages from "../../../services/getCommonPages";
 import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
 
@@ -46,7 +47,19 @@ function ProjectVersion() {
         return;
       }
 
-      postMessage("POST_DIFFING_RESULT", diffingResult.content.differences);
+      const { differences } = diffingResult.content;
+      const modifiedFrames = {};
+
+      for (const frameId in diffingResult.content.frames) {
+        if (isOwnProperty(diffingResult.content.frames, frameId)) {
+          const frameNode = diffingResult.content.frames[frameId];
+
+          modifiedFrames[frameId] = frameNode.property.absoluteBoundingBox;
+          modifiedFrames[frameId].isNew = true;
+        }
+      }
+
+      postMessage("POST_DIFFING_RESULT", { differences, modifiedFrames });
 
       navigate("/result");
     }
