@@ -12,19 +12,38 @@ function Difference() {
     className: "default",
   });
 
-  const handleRectangleClick = ev => {
-    ev.preventDefault();
+  const processDifferences = ({ differenceInformation }) => {
+    const NEW_NODE = "선택하신 이전 버전에는 존재하지 않는 노드입니다!";
+    const NEW_FRAME = "선택하신 이전 버전에는 존재하지 않는 프레임입니다!";
 
+    if (
+      differenceInformation === NEW_NODE ||
+      differenceInformation === NEW_FRAME
+    ) {
+      return { text: differenceInformation, className: "active" };
+    }
+
+    const modifiedInformation = JSON.parse(differenceInformation);
+    let differenceTexts = "";
+
+    for (const key in modifiedInformation) {
+      differenceTexts += `${key}(변경)\n${modifiedInformation[key]}\n`;
+    }
+
+    return { text: differenceTexts, className: "active" };
+  };
+
+  const handleRectangleClick = ev => {
     if (ev.data.pluginMessage.type === "RENDER_DIFFERENCE_INFORMATION") {
       const differences = ev.data.pluginMessage.content;
 
-      setDisplayText(differences);
+      const differencesInformation = processDifferences(differences);
+
+      setDisplayText(differencesInformation);
     }
   };
 
   useEffect(() => {
-    postMessage("RENDER_DIFFERENCE_INFORMATION");
-
     window.addEventListener("message", handleRectangleClick);
 
     return () => {
@@ -82,8 +101,6 @@ const Content = styled.div`
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     height: 280px;
     margin-bottom: 24px;
@@ -96,6 +113,9 @@ const Content = styled.div`
   }
 
   .difference-area.default {
+    align-items: center;
+    justify-content: center;
+
     color: #868e96;
     text-align: center;
   }
@@ -103,6 +123,8 @@ const Content = styled.div`
   .difference-area.active {
     color: #000000;
     text-align: left;
+
+    white-space: pre;
   }
 
   .description {
