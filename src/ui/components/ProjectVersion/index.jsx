@@ -20,11 +20,10 @@ function ProjectVersion() {
 
   const [toast, setToast] = useState({});
   const [projectInformation, setProjectInformation] = useState({});
-  const [beforeVersionId, setBeforeVersionId] = useState("");
   const [selectedBefore, setSelectedBefore] = useState({});
   const [commonPageId, setCommonPageId] = useState("");
 
-  const { project } = useProjectStore();
+  const { project, setProject } = useProjectStore();
   const { byDates, allDates } = useProjectVersionStore();
   const {
     data: diffingResult,
@@ -33,7 +32,7 @@ function ProjectVersion() {
     error,
   } = getDiffingResultQuery(
     projectInformation.projectKey,
-    beforeVersionId,
+    project.beforeVersionId,
     project.afterVersionId,
     commonPageId,
     projectInformation.accessToken,
@@ -128,7 +127,7 @@ function ProjectVersion() {
       return;
     }
 
-    setBeforeVersionId(selectedBefore.beforeVersion);
+    setProject({ beforeVersionId: selectedBefore.beforeVersion });
     setCommonPageId(currentPageId);
   };
 
