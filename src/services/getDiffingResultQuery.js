@@ -6,9 +6,9 @@ const getDiffingResult = async (
   beforeVersion,
   afterVersion,
   pageId,
+  token,
 ) => {
   const baseURI = import.meta.env.VITE_BACKEND_BASE_API_URI;
-  const token = JSON.parse(localStorage.getItem("FigmaToken")).access_token;
 
   const queryParams = {
     "before-version": beforeVersion,
@@ -38,6 +38,7 @@ const getDiffingResultQuery = (
   beforeVersion,
   afterVersion,
   pageId,
+  token,
 ) => {
   return useQuery(
     `${beforeVersion}-${afterVersion}-${pageId}`,
@@ -47,6 +48,7 @@ const getDiffingResultQuery = (
         beforeVersion,
         afterVersion,
         pageId,
+        token,
       );
 
       return result;

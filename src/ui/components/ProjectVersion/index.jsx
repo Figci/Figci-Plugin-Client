@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Button from "../shared/Button";
@@ -14,21 +15,17 @@ import isCommonPage from "../../../utils/isCommonPage";
 import getCommonPages from "../../../services/getCommonPages";
 import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
 
-const [GET_CURRENT_PAGE_ID, GET_PROJECT_KEY, GET_ACCESS_TOKEN] = [
-  "GET_CURRENT_PAGE_ID",
-  "GET_PROJECT_KEY",
-  "GET_ACCESS_TOKEN",
-];
-
 function ProjectVersion() {
+  const navigate = useNavigate();
+
   const [toast, setToast] = useState({});
   const [projectInformation, setProjectInformation] = useState({});
-  const [selectedVersion, setSelectedVersion] = useState("");
+  const [beforeVersionId, setBeforeVersionId] = useState("");
+  const [selectedBefore, setSelectedBefore] = useState({});
   const [commonPageId, setCommonPageId] = useState("");
 
-  const { project, setProject, clearProject } = useProjectStore();
+  const { project } = useProjectStore();
   const { byDates, allDates } = useProjectVersionStore();
-
   const {
     data: diffingResult,
     isLoading,
@@ -36,50 +33,58 @@ function ProjectVersion() {
     error,
   } = getDiffingResultQuery(
     projectInformation.projectKey,
-    projectInformation.beforeVersion,
-    projectInformation.afterVersion,
+    beforeVersionId,
+    project.afterVersionId,
     commonPageId,
+    projectInformation.accessToken,
   );
 
+  useEffect(() => {
+    if (diffingResult) {
+      if (diffingResult.result === "error") {
+        setToast({ status: true, message: diffingResult.message });
+
+        return;
+      }
+
+      postMessage("POST_DIFFING_RESULT", diffingResult.content.differences);
+
+      navigate("/result");
+    }
+  }, [diffingResult]);
+
   const handleProjectInformation = ev => {
-    switch (ev.data.pluginMessage.type) {
-      case GET_CURRENT_PAGE_ID:
-        const pageId = ev.data.pluginMessage.content;
+    if (ev.data.pluginMessage.type === "GET_CURRENT_PAGE_ID") {
+      const pageId = ev.data.pluginMessage.content;
 
-        setProjectInformation(currentState => ({ ...currentState, pageId }));
+      setProjectInformation(currentState => ({ ...currentState, pageId }));
+    }
 
-        break;
+    if (ev.data.pluginMessage.type === "GET_PROJECT_KEY") {
+      const projectKey = ev.data.pluginMessage.content;
 
-      case GET_PROJECT_KEY:
-        const projectKey = ev.data.pluginMessage.content;
+      setProjectInformation(currentState => ({
+        ...currentState,
+        projectKey,
+      }));
+    }
 
-        setProjectInformation(currentState => ({
-          ...currentState,
-          projectKey,
-        }));
+    if (ev.data.pluginMessage.type === "GET_ACCESS_TOKEN") {
+      const accessToken = ev.data.pluginMessage.content;
 
-        break;
-
-      case GET_ACCESS_TOKEN:
-        const accessToken = ev.data.pluginMessage.content;
-
-        setProjectInformation(currentState => ({
-          ...currentState,
-          accessToken,
-        }));
-
-        break;
-
-      default:
-        break;
+      setProjectInformation(currentState => ({
+        ...currentState,
+        accessToken,
+      }));
     }
   };
 
   const handleChange = ev => {
     ev.preventDefault();
+    ev.stopPropagation();
 
-    setSelectedVersion({
-      ...selectedVersion,
+    setSelectedBefore({
+      ...selectedBefore,
       [ev.currentTarget.className]: ev.target.value,
     });
   };
@@ -87,21 +92,22 @@ function ProjectVersion() {
   const handleClick = async ev => {
     ev.preventDefault();
 
-    if (!selectedVersion.beforeVersion) {
+    if (!selectedBefore.beforeVersion) {
       setToast({ status: true, messaeg: "선택하지 않은 버전이 존재합니다." });
 
       return;
     }
 
-    const { beforeVersionId } = selectedVersion;
+    const { beforeVersion } = selectedBefore;
     const { afterVersionId } = project;
     const { projectKey, accessToken } = projectInformation;
 
     const responseResult = await getCommonPages(
       projectKey,
-      beforeVersionId,
+      beforeVersion,
       afterVersionId,
       accessToken,
+      projectInformation.accessToken,
     );
 
     if (responseResult.result === "error") {
@@ -118,15 +124,18 @@ function ProjectVersion() {
         status: true,
         message: "선택하신 버전에는 현재 페이지가 존재하지 않습니다!",
       });
+
+      return;
     }
+
+    setBeforeVersionId(selectedBefore.beforeVersion);
+    setCommonPageId(currentPageId);
   };
 
   useEffect(() => {
-    clearProject();
-
-    postMessage(GET_CURRENT_PAGE_ID);
-    postMessage(GET_PROJECT_KEY);
-    postMessage(GET_ACCESS_TOKEN);
+    postMessage("GET_CURRENT_PAGE_ID");
+    postMessage("GET_PROJECT_KEY");
+    postMessage("GET_ACCESS_TOKEN");
 
     window.addEventListener("message", handleProjectInformation);
 
@@ -164,8 +173,8 @@ function ProjectVersion() {
               <option value="" disabled selected>
                 버전 선택
               </option>
-              {selectedVersion.beforeDate &&
-                createOption(byDates[selectedVersion.beforeDate])}
+              {selectedBefore.beforeDate &&
+                createOption(byDates[selectedBefore.beforeDate])}
             </select>
             <Description
               className="description"
@@ -177,7 +186,7 @@ function ProjectVersion() {
           <Button
             handleClick={handleClick}
             usingCase="solid"
-            size="small"
+            size="medium"
             className="next"
           >
             비교하기
