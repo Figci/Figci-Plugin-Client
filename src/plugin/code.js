@@ -42,4 +42,8 @@ figma.ui.onmessage = async message => {
       content: newVersionId,
     });
   }
+
+  if (message.type === "POST_DIFFING_RESULT") {
+    const differences = message.content;
+  }
 };
