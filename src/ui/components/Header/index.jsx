@@ -17,7 +17,7 @@ function Header() {
 const HeadWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 32px 24px;
+  padding: 24px;
 
   .logo {
     height: 20px;
