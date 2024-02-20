@@ -43,7 +43,7 @@ function Onboarding() {
     if (ev.data.pluginMessage.type === "GET_NEW_VERSION_ID") {
       const newVersionId = ev.data.pluginMessage.content;
 
-      setProject({ afterVersionId: newVersionId });
+      setProject({ afterVersionId: newVersionId.id });
 
       navigate("/version");
     }
