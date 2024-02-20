@@ -145,17 +145,22 @@ function ProjectVersion() {
 
   return (
     <>
-      <ContentsWrapper>
-        <div>
-          <h1 className="step">STEP 02</h1>
+      <Wrapper>
+        <ContentHeader>
           <h1 className="title">
             현재 버전과 비교할 <br />
             이전 버전을 선택해 주세요.
           </h1>
-        </div>
-        <form>
+          <Description
+            className="title-description"
+            size="medium"
+            align="left"
+            text="현재 보고 있으신 페이지 기준으로 비교해드려요."
+          />
+        </ContentHeader>
+        <VersionForm>
           <label htmlFor="beforeVersion">
-            이전 버전 선택
+            이전 버전
             <select className="beforeDate" onChange={handleChange}>
               <option value="" disabled selected>
                 날짜 선택
@@ -190,8 +195,8 @@ function ProjectVersion() {
           >
             비교하기
           </Button>
-        </form>
-      </ContentsWrapper>
+        </VersionForm>
+      </Wrapper>
       {toast.status && (
         <ToastPopup setToast={setToast} message={toast.message} />
       )}
@@ -199,36 +204,24 @@ function ProjectVersion() {
   );
 }
 
-const ContentsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
+const Wrapper = styled.div`
   padding: 24px;
+`;
 
-  .step {
-    color: #2623fb;
-    font-size: 1.125rem;
-    line-height: 24px;
-    text-align: left;
-    font-weight: 800;
-  }
+const ContentHeader = styled.div`
+  padding: 0 0 48px 0;
 
   .title {
-    margin-bottom: 48px;
-
     color: #000000;
     font-size: 1.125rem;
     line-height: 24px;
     text-align: left;
     font-weight: 800;
   }
+`;
 
-  form {
-    width: 100%;
-    height: 100%;
-  }
+const VersionForm = styled.form`
+  width: 100%;
 
   label {
     height: 100%;
@@ -249,10 +242,19 @@ const ContentsWrapper = styled.div`
     border-radius: 4px;
   }
 
-  .description {
-    margin-top: 12px;
+  .beforeVersion {
+    margin-bottom: 12px;
+  }
 
+  .description {
     color: #868e96;
+  }
+
+  Button {
+    position: fixed;
+
+    width: 355px;
+    bottom: 24px;
   }
 `;
 
