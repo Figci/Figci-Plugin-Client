@@ -5,33 +5,14 @@ import styled from "styled-components";
 import Description from "../shared/Description";
 import Button from "../shared/Button";
 
+import processDifferences from "../../../utils/processDifferences";
+
 function Difference() {
   const navigate = useNavigate();
   const [displayText, setDisplayText] = useState({
     text: "변경사항을 선택해주세요.",
     className: "default",
   });
-
-  const processDifferences = ({ differenceInformation }) => {
-    const NEW_NODE = "선택하신 이전 버전에는 존재하지 않는 노드입니다!";
-    const NEW_FRAME = "선택하신 이전 버전에는 존재하지 않는 프레임입니다!";
-
-    if (
-      differenceInformation === NEW_NODE ||
-      differenceInformation === NEW_FRAME
-    ) {
-      return { text: differenceInformation, className: "active" };
-    }
-
-    const modifiedInformation = JSON.parse(differenceInformation);
-    let differenceTexts = "";
-
-    for (const key in modifiedInformation) {
-      differenceTexts += `${key}(변경)\n${modifiedInformation[key]}\n`;
-    }
-
-    return { text: differenceTexts, className: "active" };
-  };
 
   const handleRectangleClick = ev => {
     if (ev.data.pluginMessage.type === "RENDER_DIFFERENCE_INFORMATION") {
