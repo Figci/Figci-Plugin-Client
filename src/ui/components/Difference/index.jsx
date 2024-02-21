@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { nanoid } from "nanoid";
 
 import Description from "../shared/Description";
 import Button from "../shared/Button";
@@ -10,7 +11,8 @@ import processDifferences from "../../../utils/processDifferences";
 function Difference() {
   const navigate = useNavigate();
   const [displayText, setDisplayText] = useState({
-    text: "변경사항을 선택해주세요.",
+    titleOfChanges: null,
+    detailOfChanges: ["변경사항을 선택해주세요."],
     className: "default",
   });
 
@@ -42,7 +44,13 @@ function Difference() {
         text="빨강/초록 영역을 선택하시면, 해당 영역에 있는 변경사항을\n자세하게 살펴볼 수 있어요."
       />
       <div className={`difference-area ${displayText.className}`}>
-        {displayText.text}
+        {!displayText.titleOfChanges && displayText.detailOfChanges[0]}
+        {displayText.titleOfChanges.map((title, index) => (
+          <Sentence key={nanoid(10)}>
+            <h5 className="subtitle">{title}</h5>
+            <p className="detail">{displayText.detailOfChanges[index]}</p>
+          </Sentence>
+        ))}
       </div>
       <div className="button">
         <Button
@@ -91,6 +99,7 @@ const Content = styled.div`
     background-color: #f1f3f5;
     font-size: 0.875rem;
     line-height: 22px;
+    word-break: keep-all;
   }
 
   .difference-area.default {
@@ -104,8 +113,6 @@ const Content = styled.div`
   .difference-area.active {
     color: #000000;
     text-align: left;
-
-    white-space: pre;
   }
 
   .description {
@@ -116,6 +123,22 @@ const Content = styled.div`
   .button {
     position: fixed;
     bottom: 24px;
+  }
+`;
+
+const Sentence = styled.div`
+  width: auto;
+
+  word-break: keep-all;
+
+  .subtitle {
+    font-weight: 700;
+  }
+
+  .detail {
+    margin-bottom: 8px;
+
+    color: #343e40;
   }
 `;
 
