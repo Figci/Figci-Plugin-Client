@@ -129,7 +129,7 @@ figma.ui.onmessage = async message => {
 
   if (message.type === "GET_NEW_VERSION_ID") {
     const newVersionId = await figma.saveVersionHistoryAsync(
-      new Date().toISOString().split("T").join(" "),
+      new Date().toISOString().split("T")[1],
     );
 
     figma.ui.postMessage({
