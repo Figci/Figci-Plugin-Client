@@ -1,21 +1,28 @@
 import CONFIG from "../constants/config";
 
 const processDifferences = ({ differenceInformation }) => {
+  const titleOfChanges = [];
+  const detailOfChanges = [];
+
   if (
     differenceInformation === CONFIG.NEW_NODE ||
     differenceInformation === CONFIG.NEW_FRAME
   ) {
-    return { text: differenceInformation, className: "active" };
+    return {
+      titleOfChanges: ["NEW✨"],
+      detailOfChanges: [differenceInformation],
+      className: "active",
+    };
   }
 
   const modifiedInformation = JSON.parse(differenceInformation);
-  let differenceTexts = "";
 
   for (const key in modifiedInformation) {
-    differenceTexts += `${key}(변경)\n${modifiedInformation[key]}\n`;
+    titleOfChanges.push(`${key}`);
+    detailOfChanges.push(`"${modifiedInformation[key]}"(으)로 변경됐어요!`);
   }
 
-  return { text: differenceTexts, className: "active" };
+  return { titleOfChanges, detailOfChanges, className: "active" };
 };
 
 export default processDifferences;
