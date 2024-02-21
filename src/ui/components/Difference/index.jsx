@@ -4,15 +4,32 @@ import { nanoid } from "nanoid";
 
 import Description from "../shared/Description";
 import Button from "../shared/Button";
-import Modal from "../shared/Modal";
-import Loading from "../shared/Loading";
-import Popup from "../shared/Popup";
+import ToastPopup from "../shared/Toast";
 
+import usePageListStore from "../../../store/projectPage";
+import useProjectStore from "../../../store/project";
+
+import isOwnProperty from "../../../utils/isOwnProperty";
+import postMessage from "../../../utils/postMessage";
+import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
 import processDifferences from "../../../utils/processDifferences";
 
 function Difference() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState({});
+  const [pageId, setPageId] = useState("");
   const [isOpenedPopup, setIsOpenedPopup] = useState(false);
+  const [projectStatus, setProjectStatus] = useState({});
+  const { allPageIds } = usePageListStore();
+  const { project } = useProjectStore();
+
+  const { data: diffingResult } = getDiffingResultQuery(
+    projectStatus.projectKey,
+    project.beforeVersionId,
+    project.afterVersionId,
+    pageId,
+    projectStatus.accessToken,
+  );
+  const navigate = useNavigate();
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
     detailOfChanges: ["변경사항을 선택해주세요."],
@@ -25,16 +42,87 @@ function Difference() {
     if (ev.data.pluginMessage.type === "RENDER_DIFFERENCE_INFORMATION") {
       const differences = ev.data.pluginMessage.content;
 
-      const differencesInformation = processDifferences(differences);
+      if (differences === "UNCHANGED_NODE") {
+        setDisplayText({
+          text: "변경사항을 선택해주세요.",
+          className: "default",
+        });
+      } else {
+        const differencesInformation = processDifferences(differences);
 
-      setDisplayText(differencesInformation);
+        setDisplayText(differencesInformation);
+      }
+    }
+
+    if (ev.data.pluginMessage.type === "GET_PROJECT_KEY") {
+      const projectKey = ev.data.pluginMessage.content;
+
+      setProjectStatus(projectStatus => ({ ...projectStatus, projectKey }));
+    }
+
+    if (ev.data.pluginMessage.type === "GET_ACCESS_TOKEN") {
+      const accessToken = ev.data.pluginMessage.content;
+
+      setProjectStatus(projectStatus => ({ ...projectStatus, accessToken }));
+    }
+
+    if (ev.data.pluginMessage.type === "CHANGED_CURRENT_PAGE_ID") {
+      const pageId = ev.data.pluginMessage.content;
+
+      const isComparablePage = allPageIds.includes(pageId);
+      if (!isComparablePage) {
+        setToast({
+          status: true,
+          message: "이전 버전에 존재하지 않는 페이지 입니다.",
+        });
+
+        return;
+      }
+
+      setPageId(pageId);
     }
 
     setIsLoading(false);
   };
 
   useEffect(() => {
+    setDisplayText({
+      text: "변경사항을 선택해주세요.",
+      className: "default",
+    });
+  }, [pageId]);
+
+  useEffect(() => {
+    if (!diffingResult) {
+      return;
+    }
+
+    if (diffingResult.result === "error") {
+      setToast({ status: true, message: diffingResult.message });
+
+      return;
+    }
+
+    const { differences } = diffingResult.content;
+    const modifiedFrames = {};
+
+    for (const frameId in diffingResult.content.frames) {
+      if (isOwnProperty(diffingResult.content.frames, frameId)) {
+        const frameNode = diffingResult.content.frames[frameId];
+
+        modifiedFrames[frameId] = frameNode.property.absoluteBoundingBox;
+        modifiedFrames[frameId].isNew = true;
+      }
+    }
+
+    postMessage("POST_DIFFING_RESULT", { differences, modifiedFrames });
+  }, [diffingResult]);
+
+  useEffect(() => {
     window.addEventListener("message", handleRectangleClick);
+
+    postMessage("GET_PROJECT_KEY");
+    postMessage("GET_ACCESS_TOKEN");
 
     return () => {
       window.removeEventListener("message", handleRectangleClick);
@@ -85,13 +173,17 @@ function Difference() {
             usingCase="line"
             handleClick={ev => {
               ev.preventDefault();
+              setPageId("");
 
-              setIsOpenedPopup(true);
+              navigate("/version");
             }}
           >
             버전 재선택
           </Button>
         </div>
+        {toast.status && (
+          <ToastPopup setToast={setToast} message={toast.message} />
+        )}
       </Content>
     </>
   );
