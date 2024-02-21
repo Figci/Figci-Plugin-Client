@@ -32,7 +32,7 @@ const fadeInUp = keyframes`
 const Toast = styled.div`
   position: fixed;
   z-index: 2;
-  top: 85%;
+  top: 75%;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -44,7 +44,7 @@ const Toast = styled.div`
   height: 44px;
   border-radius: 8px;
 
-  animation: ${fadeInUp} 0.5s ease-in-out;
+  animation: ${fadeInUp} 0.3s ease-in-out;
 
   opacity: 0.8;
   background-color: #000000;
