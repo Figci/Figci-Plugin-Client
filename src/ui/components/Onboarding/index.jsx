@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import Modal from "../shared/Modal";
+import Loading from "../shared/Loading";
 import Button from "../shared/Button";
 import ToastPopup from "../shared/Toast";
 
@@ -14,9 +16,11 @@ import figciLogo from "../../../../assets/logo_figci.png";
 import onboarding from "../../../../assets/onboarding.png";
 
 function Onboarding() {
-  const navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = useState(false);
   const [projectInformation, setProjectInformation] = useState({});
   const [toast, setToast] = useState({});
+
+  const navigate = useNavigate();
 
   const { setVersion, clearVersion } = useProjectVersionStore();
   const { setProject } = useProjectStore();
@@ -45,6 +49,8 @@ function Onboarding() {
 
       setProject({ afterVersionId: newVersionId.id });
 
+      setIsLoaded(false);
+
       navigate("/version");
     }
   };
@@ -67,12 +73,16 @@ function Onboarding() {
   const handleClick = async ev => {
     ev.preventDefault();
 
+    setIsLoaded(true);
+
     const allVersions = await getAllVersions(
       projectInformation.projectKey,
       projectInformation.token,
     );
 
     if (allVersions.result === "error") {
+      setIsLoaded(false);
+
       setToast({ status: true, message: allVersions.message });
 
       return;
@@ -85,6 +95,11 @@ function Onboarding() {
 
   return (
     <>
+      {isLoaded && (
+        <Modal>
+          <Loading />
+        </Modal>
+      )}
       <OnboardingContainer>
         <img className="logo" src={figciLogo} alt="figci-logo-img" />
         <Title>
