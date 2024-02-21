@@ -27,6 +27,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
 
       const differenceRectangle = figma.createRectangle();
 
+      differenceRectangle.name = "Difference Rectangle Node";
       differenceRectangle.resize(width || 1, height || 1);
       differenceRectangle.x = x;
       differenceRectangle.y = y;
@@ -136,7 +137,7 @@ figma.ui.onmessage = async message => {
   if (message.type === "POST_DIFFING_RESULT") {
     const { differences, modifiedFrames } = message.content;
 
-    differenceRectangleIdList.length = 0;
+    clearRectangeNode();
 
     renderDifferenceRectangle(differences, modifiedFrames);
   }
