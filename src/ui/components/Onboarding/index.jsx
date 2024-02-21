@@ -16,11 +16,11 @@ import figciLogo from "../../../../assets/logo_figci.png";
 import onboarding from "../../../../assets/onboarding.png";
 
 function Onboarding() {
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(false);
   const [projectInformation, setProjectInformation] = useState({});
   const [toast, setToast] = useState({});
-
-  const navigate = useNavigate();
 
   const { setVersion, clearVersion } = useProjectVersionStore();
   const { setProject } = useProjectStore();
