@@ -1,16 +1,17 @@
 import styled, { keyframes } from "styled-components";
 import Description from "./Description";
 
-function Loading() {
+function Loading({ title, text }) {
   return (
     <Wrapper>
       <Circle />
       <TextWrapper>
-        <h1 className="title">파일을 비교중이에요!</h1>
+        <h1 className="title">{title}</h1>
         <Description
           className="description"
           size="medium"
-          text="파일의 크기와 페이지의 갯수에 따라\n전체 파일을 비교하는 동안 시간이 많이 걸릴 수 있어요."
+          align="center"
+          text={text}
         />
       </TextWrapper>
     </Wrapper>
@@ -24,14 +25,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* width: 720px;
-  height: 366px; */
+  width: 280px;
+  height: 200px;
 `;
 
 const TextWrapper = styled.div`
   padding: 20px;
 
   .title {
+    margin-top: 4px;
     margin-bottom: 8px;
 
     color: #000000;
@@ -39,7 +41,7 @@ const TextWrapper = styled.div`
     font-size: 1rem;
     font-style: normal;
     font-weight: 800;
-    line-height: 48px;
+    line-height: 24px;
   }
 `;
 
@@ -54,11 +56,11 @@ const rotate = keyframes`
 `;
 
 const Circle = styled.div`
-  animation: ${rotate} 2s linear infinite;
+  animation: ${rotate} 1.5s linear infinite;
 
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: 100%;
   border-top: 4px solid #ced4da;
   border-right: 4px solid #ced4da;
   border-bottom: 4px solid #ced4da;
