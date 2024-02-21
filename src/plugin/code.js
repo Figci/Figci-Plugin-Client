@@ -163,6 +163,11 @@ figma.on("selectionchange", () => {
       type: "RENDER_DIFFERENCE_INFORMATION",
       content: { differenceInformation },
     });
+  } else {
+    figma.ui.postMessage({
+      type: "RENDER_DIFFERENCE_INFORMATION",
+      content: "UNCHANGED_NODE",
+    });
   }
 });
 
