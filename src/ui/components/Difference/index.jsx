@@ -7,12 +7,15 @@ import Description from "../shared/Description";
 import Button from "../shared/Button";
 import Modal from "../shared/Modal";
 import Loading from "../shared/Loading";
+import Popup from "../shared/Popup";
 
 import processDifferences from "../../../utils/processDifferences";
 
 function Difference() {
   const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenedPopup, setIsOpenedPopup] = useState(false);
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
     detailOfChanges: ["변경사항을 선택해주세요."],
@@ -53,6 +56,15 @@ function Difference() {
           />
         </Modal>
       )}
+      {isOpenedPopup && (
+        <Popup
+          title="새 버전을 비교하시겠어요?"
+          text={`"비교할래요!" 버튼을 누르면\\n현재 페이지 변경 사항들이 모두 삭제됩니다.`}
+          buttonName="비교할래요!"
+          path="/version"
+          isOpenedPopup={setIsOpenedPopup}
+        />
+      )}
       <Content>
         <h1 className="title">디자인 변경 사항을 확인해 보세요! 👀</h1>
         <Description
@@ -62,13 +74,14 @@ function Difference() {
           text="빨강/초록 영역을 선택하시면, 해당 영역에 있는 변경사항을\n자세하게 살펴볼 수 있어요."
         />
         <div className={`difference-area ${displayText.className}`}>
-          {!displayText.titleOfChanges && displayText.detailOfChanges[0]}
-          {displayText.titleOfChanges.map((title, index) => (
-            <Sentence key={nanoid(10)}>
-              <h5 className="subtitle">{title}</h5>
-              <p className="detail">{displayText.detailOfChanges[index]}</p>
-            </Sentence>
-          ))}
+          {!displayText.titleOfChanges ? displayText.detailOfChanges[0] : null}
+          {displayText.titleOfChanges &&
+            displayText.titleOfChanges.map((title, index) => (
+              <Sentence key={nanoid(10)}>
+                <h5 className="subtitle">{title}</h5>
+                <p className="detail">{displayText.detailOfChanges[index]}</p>
+              </Sentence>
+            ))}
         </div>
         <div className="button">
           <Button
@@ -78,7 +91,7 @@ function Difference() {
             handleClick={ev => {
               ev.preventDefault();
 
-              navigate("/version");
+              setIsOpenedPopup(true);
             }}
           >
             버전 재선택
