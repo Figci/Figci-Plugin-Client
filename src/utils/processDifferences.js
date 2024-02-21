@@ -1,3 +1,4 @@
+import isOwnProperty from "./isOwnProperty";
 import CONFIG from "../constants/config";
 
 const processDifferences = ({ differenceInformation }) => {
@@ -18,8 +19,10 @@ const processDifferences = ({ differenceInformation }) => {
   const modifiedInformation = JSON.parse(differenceInformation);
 
   for (const key in modifiedInformation) {
-    titleOfChanges.push(`${key}`);
-    detailOfChanges.push(`"${modifiedInformation[key]}"(으)로 변경됐어요!`);
+    if (isOwnProperty(modifiedInformation, key)) {
+      titleOfChanges.push(key);
+      detailOfChanges.push(`"${modifiedInformation[key]}"(으)로 변경됐어요!`);
+    }
   }
 
   return { titleOfChanges, detailOfChanges, className: "active" };
