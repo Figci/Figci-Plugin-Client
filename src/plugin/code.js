@@ -5,7 +5,7 @@ const differenceRectangleIdList = [];
 const CONSTANTS = {
   MODIFIED_FILLS: {
     type: "SOLID",
-    color: { r: 0.435, g: 0.831, b: 0.505 },
+    color: { r: 0.976, g: 0.407, b: 0.329 },
   },
   NEW_FILLS: {
     type: "SOLID",
@@ -27,7 +27,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
 
       const differenceRectangle = figma.createRectangle();
 
-      differenceRectangle.resize(width, height);
+      differenceRectangle.resize(width || 1, height || 1);
       differenceRectangle.x = x;
       differenceRectangle.y = y;
       differenceRectangle.opacity = CONSTANTS.RECT_OPACITY;
@@ -37,7 +37,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
           differenceRectangle.fills = [CONSTANTS.NEW_FILLS];
           differenceRectangle.setPluginData(
             "differenceInformation",
-            "선택하신 이전 버전에는 존재하지 않는 노드입니다!",
+            "이전 버전엔 없던 새로운 요소이에요!",
           );
 
           break;
@@ -71,13 +71,23 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
         differenceRectangle.opacity = CONSTANTS.RECT_OPACITY;
         differenceRectangle.setPluginData(
           "differenceInformation",
-          "선택하신 이전 버전에는 존재하지 않는 프레임입니다!",
+          "이전 버전엔 없던 새로운 프레임이에요!",
         );
 
         differenceRectangleIdList.push(differenceRectangle.id);
       }
     }
   }
+};
+
+const clearRectangeNode = () => {
+  differenceRectangleIdList.forEach(rectangleNodeId => {
+    const rectangleNode = figma.getNodeById(rectangleNodeId);
+
+    rectangleNode.remove();
+  });
+
+  differenceRectangleIdList.length = 0;
 };
 
 figma.ui.onmessage = async message => {
@@ -132,12 +142,38 @@ figma.ui.onmessage = async message => {
   }
 };
 
-figma.on("close", () => {
-  differenceRectangleIdList.forEach(rectangleNodeId => {
-    const rectangleNode = figma.getNodeById(rectangleNodeId);
+figma.on("selectionchange", () => {
+  const selectedNode = figma.currentPage.selection[0];
 
-    rectangleNode.remove();
+  if (!selectedNode) {
+    return;
+  }
+
+  if (differenceRectangleIdList.includes(selectedNode.id)) {
+    const differenceInformation = selectedNode.getPluginData(
+      "differenceInformation",
+    );
+
+    figma.ui.postMessage({
+      type: "RENDER_DIFFERENCE_INFORMATION",
+      content: { differenceInformation },
+    });
+  }
+});
+
+figma.on("currentpagechange", () => {
+  const currentPageId = figma.currentPage.id;
+
+  clearRectangeNode();
+
+  figma.ui.postMessage({
+    type: "CHANGED_CURRENT_PAGE_ID",
+    content: currentPageId,
   });
+});
 
-  differenceRectangleIdList.length = 0;
+figma.on("close", () => {
+  clearRectangeNode();
+
+  figma.closePlugin();
 });
