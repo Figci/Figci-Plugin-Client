@@ -5,11 +5,14 @@ import { nanoid } from "nanoid";
 
 import Description from "../shared/Description";
 import Button from "../shared/Button";
+import Modal from "../shared/Modal";
+import Loading from "../shared/Loading";
 
 import processDifferences from "../../../utils/processDifferences";
 
 function Difference() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
     detailOfChanges: ["변경사항을 선택해주세요."],
@@ -17,6 +20,8 @@ function Difference() {
   });
 
   const handleRectangleClick = ev => {
+    setIsLoading(true);
+
     if (ev.data.pluginMessage.type === "RENDER_DIFFERENCE_INFORMATION") {
       const differences = ev.data.pluginMessage.content;
 
@@ -24,6 +29,8 @@ function Difference() {
 
       setDisplayText(differencesInformation);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -35,38 +42,50 @@ function Difference() {
   }, []);
 
   return (
-    <Content>
-      <h1 className="title">디자인 변경 사항을 확인해 보세요! 👀</h1>
-      <Description
-        className="description"
-        size="large"
-        align="left"
-        text="빨강/초록 영역을 선택하시면, 해당 영역에 있는 변경사항을\n자세하게 살펴볼 수 있어요."
-      />
-      <div className={`difference-area ${displayText.className}`}>
-        {!displayText.titleOfChanges && displayText.detailOfChanges[0]}
-        {displayText.titleOfChanges.map((title, index) => (
-          <Sentence key={nanoid(10)}>
-            <h5 className="subtitle">{title}</h5>
-            <p className="detail">{displayText.detailOfChanges[index]}</p>
-          </Sentence>
-        ))}
-      </div>
-      <div className="button">
-        <Button
-          className="re-version"
-          size="medium"
-          usingCase="line"
-          handleClick={ev => {
-            ev.preventDefault();
+    <>
+      {isLoading && (
+        <Modal>
+          <Loading
+            title="변경사항 정보를 가져오고 있어요."
+            text={
+              "변경사항 정보를 가져오고 있어요.\\n정보를 가져오는 동안 잠깐만 기다려주세요."
+            }
+          />
+        </Modal>
+      )}
+      <Content>
+        <h1 className="title">디자인 변경 사항을 확인해 보세요! 👀</h1>
+        <Description
+          className="description"
+          size="large"
+          align="left"
+          text="빨강/초록 영역을 선택하시면, 해당 영역에 있는 변경사항을\n자세하게 살펴볼 수 있어요."
+        />
+        <div className={`difference-area ${displayText.className}`}>
+          {!displayText.titleOfChanges && displayText.detailOfChanges[0]}
+          {displayText.titleOfChanges.map((title, index) => (
+            <Sentence key={nanoid(10)}>
+              <h5 className="subtitle">{title}</h5>
+              <p className="detail">{displayText.detailOfChanges[index]}</p>
+            </Sentence>
+          ))}
+        </div>
+        <div className="button">
+          <Button
+            className="re-version"
+            size="medium"
+            usingCase="line"
+            handleClick={ev => {
+              ev.preventDefault();
 
-            navigate("/version");
-          }}
-        >
-          버전 재선택
-        </Button>
-      </div>
-    </Content>
+              navigate("/version");
+            }}
+          >
+            버전 재선택
+          </Button>
+        </div>
+      </Content>
+    </>
   );
 }
 

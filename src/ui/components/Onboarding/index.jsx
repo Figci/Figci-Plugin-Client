@@ -16,7 +16,7 @@ import figciLogo from "../../../../assets/logo_figci.png";
 import onboarding from "../../../../assets/onboarding.png";
 
 function Onboarding() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [projectInformation, setProjectInformation] = useState({});
   const [toast, setToast] = useState({});
 
@@ -49,7 +49,7 @@ function Onboarding() {
 
       setProject({ afterVersionId: newVersionId.id });
 
-      setIsLoaded(false);
+      setIsLoading(false);
 
       navigate("/version");
     }
@@ -73,7 +73,7 @@ function Onboarding() {
   const handleClick = async ev => {
     ev.preventDefault();
 
-    setIsLoaded(true);
+    setIsLoading(true);
 
     const allVersions = await getAllVersions(
       projectInformation.projectKey,
@@ -81,7 +81,7 @@ function Onboarding() {
     );
 
     if (allVersions.result === "error") {
-      setIsLoaded(false);
+      setIsLoading(false);
 
       setToast({ status: true, message: allVersions.message });
 
@@ -95,9 +95,14 @@ function Onboarding() {
 
   return (
     <>
-      {isLoaded && (
+      {isLoading && (
         <Modal>
-          <Loading />
+          <Loading
+            title="버전 정보를 가져오고 있어요!"
+            text={
+              "이전 버전과 현재 버전을 저장하고 있어요.\\n버전을 받아오는 동안 잠깐만 기다려주세요."
+            }
+          />
         </Modal>
       )}
       <OnboardingContainer>

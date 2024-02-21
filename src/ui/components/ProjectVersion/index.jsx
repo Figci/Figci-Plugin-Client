@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Button from "../shared/Button";
 import Description from "../shared/Description";
 import ToastPopup from "../shared/Toast";
+import Modal from "../shared/Modal";
+import Loading from "../shared/Loading";
 
 import useProjectStore from "../../../store/project";
 import useProjectVersionStore from "../../../store/projectVersion";
@@ -20,6 +22,7 @@ function ProjectVersion() {
   const navigate = useNavigate();
 
   const [toast, setToast] = useState({});
+  const [isVersionLoading, setIsVersionLoading] = useState(false);
   const [projectInformation, setProjectInformation] = useState({});
   const [selectedBefore, setSelectedBefore] = useState({});
   const [commonPageId, setCommonPageId] = useState("");
@@ -66,6 +69,8 @@ function ProjectVersion() {
   }, [diffingResult]);
 
   const handleProjectInformation = ev => {
+    setIsVersionLoading(true);
+
     if (ev.data.pluginMessage.type === "GET_CURRENT_PAGE_ID") {
       const pageId = ev.data.pluginMessage.content;
 
@@ -89,6 +94,8 @@ function ProjectVersion() {
         accessToken,
       }));
     }
+
+    setIsVersionLoading();
   };
 
   const handleChange = ev => {
@@ -103,6 +110,8 @@ function ProjectVersion() {
 
   const handleClick = async ev => {
     ev.preventDefault();
+
+    setIsVersionLoading(true);
 
     if (!selectedBefore.beforeVersion) {
       setToast({ status: true, message: "선택하지 않은 버전이 존재합니다." });
@@ -142,6 +151,8 @@ function ProjectVersion() {
 
     setProject({ beforeVersionId: selectedBefore.beforeVersion });
     setCommonPageId(currentPageId);
+
+    setIsVersionLoading(false);
   };
 
   useEffect(() => {
@@ -158,6 +169,16 @@ function ProjectVersion() {
 
   return (
     <>
+      {(isLoading || isVersionLoading) && (
+        <Modal>
+          <Loading
+            title="버전을 비교중이에요!"
+            text={
+              "파일의 크기와 페이지의 갯수에 따라\n전체 파일을 비교하는 동안\n시간이 많이 걸릴 수 있어요."
+            }
+          />
+        </Modal>
+      )}
       <Wrapper>
         <ContentHeader>
           <h1 className="title">
