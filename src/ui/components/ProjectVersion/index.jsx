@@ -95,7 +95,7 @@ function ProjectVersion() {
       }));
     }
 
-    setIsVersionLoading();
+    setIsVersionLoading(false);
   };
 
   const handleChange = ev => {
@@ -173,9 +173,7 @@ function ProjectVersion() {
         <Modal>
           <Loading
             title="버전을 비교중이에요!"
-            text={
-              "파일의 크기와 페이지의 갯수에 따라\n전체 파일을 비교하는 동안\n시간이 많이 걸릴 수 있어요."
-            }
+            text="파일의 크기와 페이지의 갯수에 따라 전체 파일을\n비교하는 동안 시간이 많이 걸릴 수 있어요."
           />
         </Modal>
       )}
