@@ -12,6 +12,7 @@ const CONSTANTS = {
     color: { r: 0.435, g: 0.831, b: 0.505 },
   },
   RECT_OPACITY: 0.2,
+  MIN_SIZE_VALUE: 1,
 };
 
 const isOwnProperty = (targetObject, targetProperty) => {
@@ -28,7 +29,10 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
       const differenceRectangle = figma.createRectangle();
 
       differenceRectangle.name = "Difference Rectangle Node";
-      differenceRectangle.resize(width || 1, height || 1);
+      differenceRectangle.resize(
+        width || CONSTANTS.MIN_SIZE_VALUE,
+        height || CONSTANTS.MIN_SIZE_VALUE,
+      );
       differenceRectangle.x = x;
       differenceRectangle.y = y;
       differenceRectangle.opacity = CONSTANTS.RECT_OPACITY;
@@ -38,7 +42,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
           differenceRectangle.fills = [CONSTANTS.NEW_FILLS];
           differenceRectangle.setPluginData(
             "differenceInformation",
-            "이전 버전엔 없던 새로운 요소이에요!",
+            "이전 버전엔 없던 새로운 요소에요!",
           );
 
           break;
@@ -81,7 +85,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
   }
 };
 
-const clearRectangeNode = () => {
+const clearRectangleNode = () => {
   differenceRectangleIdList.forEach(rectangleNodeId => {
     const rectangleNode = figma.getNodeById(rectangleNodeId);
 
@@ -137,7 +141,7 @@ figma.ui.onmessage = async message => {
   if (message.type === "POST_DIFFING_RESULT") {
     const { differences, modifiedFrames } = message.content;
 
-    clearRectangeNode();
+    clearRectangleNode();
 
     renderDifferenceRectangle(differences, modifiedFrames);
   }
@@ -165,7 +169,7 @@ figma.on("selectionchange", () => {
 figma.on("currentpagechange", () => {
   const currentPageId = figma.currentPage.id;
 
-  clearRectangeNode();
+  clearRectangleNode();
 
   figma.ui.postMessage({
     type: "CHANGED_CURRENT_PAGE_ID",
@@ -174,7 +178,7 @@ figma.on("currentpagechange", () => {
 });
 
 figma.on("close", () => {
-  clearRectangeNode();
+  clearRectangleNode();
 
   figma.closePlugin();
 });
