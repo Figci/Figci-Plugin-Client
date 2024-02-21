@@ -105,7 +105,7 @@ function ProjectVersion() {
     ev.preventDefault();
 
     if (!selectedBefore.beforeVersion) {
-      setToast({ status: true, messaeg: "선택하지 않은 버전이 존재합니다." });
+      setToast({ status: true, message: "선택하지 않은 버전이 존재합니다." });
 
       return;
     }
@@ -123,7 +123,7 @@ function ProjectVersion() {
     );
 
     if (responseResult.result === "error") {
-      setToast({ status: true, messaeg: responseResult.message });
+      setToast({ status: true, message: responseResult.message });
 
       return;
     }
