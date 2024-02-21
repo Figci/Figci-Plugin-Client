@@ -27,11 +27,11 @@ const ModalContainer = styled.div`
   left: 50%;
   z-index: 2;
   transform: translate(-50%, -50%);
-
   box-sizing: border-box;
   width: fit-content;
   height: fit-content;
-  padding: 24px;
+  padding-top: 24px;
+  padding-bottom: 16px;
   border: 2px solid #000000;
   border-radius: 4px;
 
