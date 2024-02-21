@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { nanoid } from "nanoid";
 
@@ -12,8 +11,6 @@ import Popup from "../shared/Popup";
 import processDifferences from "../../../utils/processDifferences";
 
 function Difference() {
-  const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenedPopup, setIsOpenedPopup] = useState(false);
   const [displayText, setDisplayText] = useState({
@@ -50,16 +47,14 @@ function Difference() {
         <Modal>
           <Loading
             title="변경사항 정보를 가져오고 있어요."
-            text={
-              "변경사항 정보를 가져오고 있어요.\\n정보를 가져오는 동안 잠깐만 기다려주세요."
-            }
+            text="변경사항 정보를 가져오고 있어요.\n정보를 가져오는 동안 잠깐만 기다려주세요."
           />
         </Modal>
       )}
       {isOpenedPopup && (
         <Popup
           title="새 버전을 비교하시겠어요?"
-          text={`"비교할래요!" 버튼을 누르면\\n현재 페이지 변경 사항들이 모두 삭제됩니다.`}
+          text="비교하기 버튼을 누르면 현재 페이지의\n변경 사항들이 모두 삭제돼요."
           buttonName="비교할래요!"
           path="/version"
           isOpenedPopup={setIsOpenedPopup}
