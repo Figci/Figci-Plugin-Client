@@ -10,6 +10,7 @@ import Loading from "../shared/Loading";
 
 import useProjectStore from "../../../store/project";
 import useProjectVersionStore from "../../../store/projectVersion";
+import usePageListStore from "../../../store/projectPage";
 
 import postMessage from "../../../utils/postMessage";
 import createOption from "../../../utils/createOption";
@@ -29,6 +30,8 @@ function ProjectVersion() {
 
   const { project, setProject } = useProjectStore();
   const { byDates, allDates } = useProjectVersionStore();
+  const { setPages } = usePageListStore();
+
   const {
     data: diffingResult,
     isLoading,
@@ -131,6 +134,7 @@ function ProjectVersion() {
       projectInformation.accessToken,
     );
 
+    setPages(responseResult.content);
     if (responseResult.result === "error") {
       setToast({ status: true, message: responseResult.message });
 
