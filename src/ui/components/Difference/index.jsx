@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { nanoid } from "nanoid";
 
+import { useNavigate } from "react-router-dom";
 import Description from "../shared/Description";
 import Button from "../shared/Button";
 import ToastPopup from "../shared/Toast";
+import Loading from "../shared/Loading";
+import Modal from "../shared/Modal";
+import Popup from "../shared/Popup";
 
 import usePageListStore from "../../../store/projectPage";
 import useProjectStore from "../../../store/project";
@@ -22,7 +26,7 @@ function Difference() {
   const { allPageIds } = usePageListStore();
   const { project } = useProjectStore();
 
-  const { data: diffingResult } = getDiffingResultQuery(
+  const { data: diffingResult, isLoading } = getDiffingResultQuery(
     projectStatus.projectKey,
     project.beforeVersionId,
     project.afterVersionId,
@@ -37,14 +41,13 @@ function Difference() {
   });
 
   const handleRectangleClick = ev => {
-    setIsLoading(true);
-
     if (ev.data.pluginMessage.type === "RENDER_DIFFERENCE_INFORMATION") {
       const differences = ev.data.pluginMessage.content;
 
       if (differences === "UNCHANGED_NODE") {
         setDisplayText({
-          text: "변경사항을 선택해주세요.",
+          titleOfChanges: null,
+          detailOfChanges: ["변경사항을 선택해주세요."],
           className: "default",
         });
       } else {
@@ -81,13 +84,12 @@ function Difference() {
 
       setPageId(pageId);
     }
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
     setDisplayText({
-      text: "변경사항을 선택해주세요.",
+      titleOfChanges: null,
+      detailOfChanges: ["변경사항을 선택해주세요."],
       className: "default",
     });
   }, [pageId]);
@@ -175,7 +177,7 @@ function Difference() {
               ev.preventDefault();
               setPageId("");
 
-              navigate("/version");
+              setIsOpenedPopup(true);
             }}
           >
             버전 재선택
