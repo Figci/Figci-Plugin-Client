@@ -78,6 +78,8 @@ function Difference() {
           message: "이전 버전에 존재하지 않는 페이지 입니다.",
         });
 
+        setPageId("");
+
         return;
       }
 
