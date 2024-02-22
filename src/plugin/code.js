@@ -108,7 +108,7 @@ const formatTime = dateString => {
   const date = koreaTime.getDate();
 
   const hour = koreaTime.getHours();
-  const AmPm = hour >= 12 ? "PM" : "AM";
+  const ampm = hour >= 12 ? "PM" : "AM";
   const formattedHour = hour % 12 || 12;
   const minutes =
     koreaTime.getMinutes() < 10
@@ -116,7 +116,7 @@ const formatTime = dateString => {
       : koreaTime.getMinutes();
 
   const formattedDate = `${year}-${month}-${date}`;
-  const formattedTime = `${formattedHour}:${minutes} ${AmPm}`;
+  const formattedTime = `${formattedHour}:${minutes} ${ampm}`;
 
   return { formattedDate, formattedTime };
 };
