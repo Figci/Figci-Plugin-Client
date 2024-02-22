@@ -135,6 +135,7 @@ function ProjectVersion() {
     );
 
     setPages(responseResult.content);
+
     if (responseResult.result === "error") {
       setToast({ status: true, message: responseResult.message });
 
