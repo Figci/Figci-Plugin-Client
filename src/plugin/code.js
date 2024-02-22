@@ -29,7 +29,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
 
       const differenceRectangle = figma.createRectangle();
 
-      differenceRectangle.name = "Difference Rectangle Node";
+      differenceRectangle.name = "Figci_New_Rectangle";
       differenceRectangle.resize(
         width || CONSTANTS.MIN_SIZE_VALUE,
         height || CONSTANTS.MIN_SIZE_VALUE,
@@ -70,6 +70,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
         const differenceRectangle = figma.createRectangle();
         const { x, y, width, height } = modifiedFrames[frameId];
 
+        differenceRectangle.name = "Figci_New_Rectangle";
         differenceRectangle.resize(width, height);
         differenceRectangle.x = x;
         differenceRectangle.y = y;
