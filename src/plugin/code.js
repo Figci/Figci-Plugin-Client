@@ -13,6 +13,7 @@ const CONSTANTS = {
   },
   RECT_OPACITY: 0.2,
   MIN_SIZE_VALUE: 1,
+  TIME_GAP_MS: 9 * 60 * 60 * 1000,
 };
 
 const isOwnProperty = (targetObject, targetProperty) => {
@@ -95,6 +96,31 @@ const clearRectangleNode = () => {
   differenceRectangleIdList.length = 0;
 };
 
+const formatTime = dateString => {
+  const currentDate = new Date(dateString);
+  const utcMS =
+    currentDate.getTime() + currentDate.getTimezoneOffset() * 60 * 1000;
+
+  const koreaTime = new Date(utcMS + CONSTANTS.TIME_GAP_MS);
+
+  const year = koreaTime.getFullYear();
+  const month = koreaTime.getMonth();
+  const date = koreaTime.getDate();
+
+  const hour = koreaTime.getHours();
+  const AmPm = hour >= 12 ? "PM" : "AM";
+  const formattedHour = hour % 12 || 12;
+  const minutes =
+    koreaTime.getMinutes() < 10
+      ? `0${koreaTime.getMinutes()}`
+      : koreaTime.getMinutes();
+
+  const formattedDate = `${year}-${month}-${date}`;
+  const formattedTime = `${formattedHour}:${minutes} ${AmPm}`;
+
+  return { formattedDate, formattedTime };
+};
+
 figma.ui.onmessage = async message => {
   if (message.type === "SAVE_ACCESS_TOKEN") {
     await figma.clientStorage.setAsync("accessToken", message.content);
@@ -128,9 +154,10 @@ figma.ui.onmessage = async message => {
   }
 
   if (message.type === "GET_NEW_VERSION_ID") {
-    const newVersionId = await figma.saveVersionHistoryAsync(
-      new Date().toISOString().split("T")[1],
-    );
+    const currentDateString = new Date().toISOString();
+    const { formattedTime: createdTime } = formatTime(currentDateString);
+
+    const newVersionId = await figma.saveVersionHistoryAsync(createdTime);
 
     figma.ui.postMessage({
       type: "GET_NEW_VERSION_ID",

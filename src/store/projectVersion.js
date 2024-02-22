@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+import formatTime from "../utils/formatTime";
+
 const store = set => {
   return {
     byDates: {},
@@ -7,7 +9,8 @@ const store = set => {
     setVersion: versionList => {
       versionList.forEach(version => {
         const { id, created_at: createdAt, label } = version;
-        const [createdDate, createdTime] = createdAt.split("T");
+        const { formattedDate: createdDate, formattedTime: createdTime } =
+          formatTime(createdAt);
 
         return set(state => {
           if (!state.byDates[createdDate]) {
@@ -18,7 +21,7 @@ const store = set => {
             ...state.byDates,
             [createdDate]: {
               ...state.byDates[createdDate],
-              [id]: { label: label || createdTime.slice(0, -4), createdAt },
+              [id]: { label: label || createdTime, createdAt },
             },
           };
 
