@@ -98,6 +98,12 @@ function ProjectVersion() {
       }));
     }
 
+    if (ev.data.pluginMessage.type === "CHANGED_CURRENT_PAGE_ID") {
+      const pageId = ev.data.pluginMessage.content;
+
+      setProjectInformation(currentState => ({ ...currentState, pageId }));
+    }
+
     setIsVersionLoading(false);
   };
 
@@ -117,6 +123,8 @@ function ProjectVersion() {
     setIsVersionLoading(true);
 
     if (!selectedBefore.beforeVersion) {
+      setIsVersionLoading(false);
+
       setToast({ status: true, message: "선택하지 않은 버전이 존재합니다." });
 
       return;
@@ -137,6 +145,8 @@ function ProjectVersion() {
     setPages(responseResult.content);
 
     if (responseResult.result === "error") {
+      setIsVersionLoading(false);
+
       setToast({ status: true, message: responseResult.message });
 
       return;
@@ -146,6 +156,8 @@ function ProjectVersion() {
     const currentPageId = projectInformation.pageId;
 
     if (!isCommonPage(commonPageList, currentPageId)) {
+      setIsVersionLoading(false);
+
       setToast({
         status: true,
         message: "선택하신 버전에는 현재 페이지가 존재하지 않습니다!",
