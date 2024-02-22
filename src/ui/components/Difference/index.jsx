@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { nanoid } from "nanoid";
 
-import { useNavigate } from "react-router-dom";
 import Description from "../shared/Description";
 import Button from "../shared/Button";
 import ToastPopup from "../shared/Toast";
@@ -13,9 +12,9 @@ import Popup from "../shared/Popup";
 import usePageListStore from "../../../store/projectPage";
 import useProjectStore from "../../../store/project";
 
+import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
 import isOwnProperty from "../../../utils/isOwnProperty";
 import postMessage from "../../../utils/postMessage";
-import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
 import processDifferences from "../../../utils/processDifferences";
 
 function Difference() {
@@ -23,6 +22,12 @@ function Difference() {
   const [pageId, setPageId] = useState("");
   const [isOpenedPopup, setIsOpenedPopup] = useState(false);
   const [projectStatus, setProjectStatus] = useState({});
+  const [displayText, setDisplayText] = useState({
+    titleOfChanges: null,
+    detailOfChanges: ["변경사항을 선택해주세요."],
+    className: "default",
+  });
+
   const { allPageIds } = usePageListStore();
   const { project } = useProjectStore();
 
@@ -33,12 +38,6 @@ function Difference() {
     pageId,
     projectStatus.accessToken,
   );
-  const navigate = useNavigate();
-  const [displayText, setDisplayText] = useState({
-    titleOfChanges: null,
-    detailOfChanges: ["변경사항을 선택해주세요."],
-    className: "default",
-  });
 
   const handleRectangleClick = ev => {
     if (ev.data.pluginMessage.type === "RENDER_DIFFERENCE_INFORMATION") {
@@ -71,8 +70,8 @@ function Difference() {
 
     if (ev.data.pluginMessage.type === "CHANGED_CURRENT_PAGE_ID") {
       const pageId = ev.data.pluginMessage.content;
-
       const isComparablePage = allPageIds.includes(pageId);
+
       if (!isComparablePage) {
         setToast({
           status: true,
@@ -121,10 +120,10 @@ function Difference() {
   }, [diffingResult]);
 
   useEffect(() => {
-    window.addEventListener("message", handleRectangleClick);
-
     postMessage("GET_PROJECT_KEY");
     postMessage("GET_ACCESS_TOKEN");
+
+    window.addEventListener("message", handleRectangleClick);
 
     return () => {
       window.removeEventListener("message", handleRectangleClick);
@@ -175,6 +174,7 @@ function Difference() {
             usingCase="line"
             handleClick={ev => {
               ev.preventDefault();
+
               setPageId("");
 
               setIsOpenedPopup(true);
