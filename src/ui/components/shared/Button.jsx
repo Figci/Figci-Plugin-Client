@@ -1,6 +1,14 @@
 import styled, { css } from "styled-components";
 
 const BUTTON_SIZES = {
+  tiny: css`
+    --button-min-width: 95px;
+    --button-min-height: 20px;
+    --button-font-size: 0.815rem;
+    --button-font-weight: 700;
+    --button-padding: 8px 16px;
+    --button-radius: 20px;
+  `,
   small: css`
     --button-min-width: 150px;
     --button-min-height: 45px;
@@ -21,6 +29,10 @@ const BUTTON_SIZES = {
 };
 
 const USING_CASES = {
+  void: css`
+    --button-color: #ffffff;
+    --button-background-color: #868e96;
+  `,
   solid: css`
     --button-color: #ffffff;
     --button-background-color: #000000;
