@@ -5,13 +5,24 @@ const differenceRectangleIdList = [];
 const CONSTANTS = {
   MODIFIED_FILLS: {
     type: "SOLID",
-    color: { r: 0.976, g: 0.407, b: 0.329 },
+    color: { r: 1, g: 0.419, b: 0 },
+    opacity: 0.000001,
+  },
+  MODIFIED_STROKES: {
+    type: "SOLID",
+    color: { r: 1, g: 0.419, b: 0 },
+    opacity: 0.6,
   },
   NEW_FILLS: {
     type: "SOLID",
-    color: { r: 0.435, g: 0.831, b: 0.505 },
+    color: { r: 0.129, g: 0.8, b: 0.239 },
+    opacity: 0.000001,
   },
-  RECT_OPACITY: 0.2,
+  NEW_STROKES: {
+    type: "SOLID",
+    color: { r: 0.129, g: 0.8, b: 0.239 },
+    opacity: 1,
+  },
   MIN_SIZE_VALUE: 1,
   TIME_GAP_MS: 9 * 60 * 60 * 1000,
 };
@@ -31,16 +42,18 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
 
       differenceRectangle.name = "Difference Rectangle Node";
       differenceRectangle.resize(
-        width || CONSTANTS.MIN_SIZE_VALUE,
-        height || CONSTANTS.MIN_SIZE_VALUE,
+        width + 6 || CONSTANTS.MIN_SIZE_VALUE,
+        height + 6 || CONSTANTS.MIN_SIZE_VALUE,
       );
-      differenceRectangle.x = x;
-      differenceRectangle.y = y;
-      differenceRectangle.opacity = CONSTANTS.RECT_OPACITY;
+      differenceRectangle.x = x - 3;
+      differenceRectangle.y = y - 3;
 
       switch (type) {
         case "NEW":
           differenceRectangle.fills = [CONSTANTS.NEW_FILLS];
+          differenceRectangle.strokes = [CONSTANTS.NEW_STROKES];
+          differenceRectangle.strokeWeight = 3;
+          differenceRectangle.strokeAlign = "OUTSIDE";
           differenceRectangle.setPluginData(
             "differenceInformation",
             "이전 버전엔 없던 새로운 요소에요!",
@@ -49,6 +62,9 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
           break;
         case "MODIFIED":
           differenceRectangle.fills = [CONSTANTS.MODIFIED_FILLS];
+          differenceRectangle.strokes = [CONSTANTS.MODIFIED_STROKES];
+          differenceRectangle.strokeWeight = 3;
+          differenceRectangle.strokeAlign = "OUTSIDE";
           differenceRectangle.setPluginData(
             "differenceInformation",
             JSON.stringify(differenceInformation),
@@ -71,11 +87,13 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
         const { x, y, width, height } = modifiedFrames[frameId];
 
         differenceRectangle.name = "Difference Rectangle Node";
-        differenceRectangle.resize(width, height);
-        differenceRectangle.x = x;
-        differenceRectangle.y = y;
+        differenceRectangle.resize(width + 6, height + 6);
+        differenceRectangle.x = x - 3;
+        differenceRectangle.y = y - 3;
         differenceRectangle.fills = [CONSTANTS.NEW_FILLS];
-        differenceRectangle.opacity = CONSTANTS.RECT_OPACITY;
+        differenceRectangle.strokes = [CONSTANTS.NEW_STROKES];
+        differenceRectangle.strokeWeight = 3;
+        differenceRectangle.strokeAlign = "OUTSIDE";
         differenceRectangle.setPluginData(
           "differenceInformation",
           "이전 버전엔 없던 새로운 프레임이에요!",
