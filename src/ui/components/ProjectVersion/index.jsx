@@ -68,7 +68,16 @@ function ProjectVersion() {
 
       postMessage("POST_DIFFING_RESULT", { differences, modifiedFrames });
 
-      navigate("/result");
+      navigate("/result", {
+        state: {
+          isExistDiffingResult: true,
+          paginationInitialValue: {
+            result: true,
+            currentCount: 0,
+            frameCounts: Object.keys(diffingResult.content.differences).length,
+          },
+        },
+      });
     }
   }, [diffingResult]);
 

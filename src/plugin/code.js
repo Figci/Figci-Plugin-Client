@@ -182,6 +182,14 @@ figma.ui.onmessage = async message => {
 
     renderDifferenceRectangle(differences, modifiedFrames);
   }
+
+  if (message.type === "NEXT_DIFFERENCE_RECTANGLE") {
+    figma.notify(`이전 변경사항 노드 버튼이 선택되었습니다.`);
+  }
+
+  if (message.type === "PREV_DIFFERENCE_RECTANGLE") {
+    figma.notify(`다음 변경사항 노드 버튼이 선택되었습니다.`);
+  }
 };
 
 figma.on("selectionchange", () => {
@@ -191,10 +199,24 @@ figma.on("selectionchange", () => {
     return;
   }
 
+  const totalFrameCount = differenceRectangleIdList.length;
+
   if (differenceRectangleIdList.includes(selectedNode.id)) {
     const differenceInformation = selectedNode.getPluginData(
       "differenceInformation",
     );
+
+    const currentFrameIndex =
+      differenceRectangleIdList.indexOf(selectedNode.id) + 1;
+
+    figma.ui.postMessage({
+      type: "FRAME_PAGINATION",
+      content: {
+        result: true,
+        currentCount: currentFrameIndex,
+        frameCounts: totalFrameCount,
+      },
+    });
 
     figma.ui.postMessage({
       type: "RENDER_DIFFERENCE_INFORMATION",
@@ -205,6 +227,25 @@ figma.on("selectionchange", () => {
       type: "RENDER_DIFFERENCE_INFORMATION",
       content: "UNCHANGED_NODE",
     });
+
+    if (totalFrameCount) {
+      figma.ui.postMessage({
+        type: "FRAME_PAGINATION",
+        content: {
+          result: true,
+          currentCount: 0,
+          frameCounts: totalFrameCount,
+        },
+      });
+    } else {
+      figma.ui.postMessage({
+        type: "FRAME_PAGINATION",
+        content: {
+          result: false,
+          frameCounts: "- / -",
+        },
+      });
+    }
   }
 });
 

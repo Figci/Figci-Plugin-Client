@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { nanoid } from "nanoid";
 
+import { useLocation } from "react-router-dom";
 import Description from "../shared/Description";
 import Button from "../shared/Button";
 import ToastPopup from "../shared/Toast";
@@ -21,13 +22,16 @@ import processDifferences from "../../../utils/processDifferences";
 function Difference() {
   const [toast, setToast] = useState({});
   const [isOpenedPopup, setIsOpenedPopup] = useState(false);
-  const [accessToken, setAccessToken] = useState("");
-  const [pageId, setPageId] = useState("");
+  const [projectStatus, setProjectStatus] = useState({});
+  const [isComparable, setIsComparable] = useState(false);
+  const [pagination, setPagination] = useState("");
+  const [isPaginationClicked, setIsPaginationClicked] = useState("");
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
     detailOfChanges: ["변경사항을 선택해주세요."],
     className: "default",
   });
+  const location = useLocation();
 
   const { allPageIds } = usePageListStore();
   const { project } = useProjectStore();
@@ -68,20 +72,25 @@ function Difference() {
       const isComparablePage = allPageIds.includes(pageId);
 
       if (!isComparablePage) {
-        setToast({
-          status: true,
-          message: "이전 버전에 존재하지 않는 페이지 입니다.",
-        });
+        setIsComparable(false);
+        setPageId("");
+        setPagination({ result: false, frameCounts: "- / -" });
 
         setPageId("");
 
         return;
       }
 
+      setIsComparable(true);
       setPageId(pageId);
     }
-  };
 
+    if (ev.data.pluginMessage.type === "FRAME_PAGINATION") {
+      const framePagination = ev.data.pluginMessage.content;
+
+      setPagination(framePagination);
+    }
+  };
   useEffect(() => {
     setDisplayText({
       titleOfChanges: null,
@@ -96,6 +105,8 @@ function Difference() {
     }
 
     if (diffingResult.result === "error") {
+      setIsComparable(false);
+      setPagination({ result: false, frameCounts: "- / -" });
       setToast({ status: true, message: diffingResult.message });
 
       return;
@@ -113,10 +124,24 @@ function Difference() {
       }
     }
 
+    setPagination({
+      result: true,
+      currentCount: 0,
+      frameCounts: Object.keys(differences).length,
+    });
+
     postMessage("POST_DIFFING_RESULT", { differences, modifiedFrames });
   }, [diffingResult]);
 
   useEffect(() => {
+    const receivedFromVersionPage = location.state;
+
+    if (receivedFromVersionPage) {
+      setIsComparable(receivedFromVersionPage.isExistDiffingResult);
+      setPagination(receivedFromVersionPage.paginationInitialValue);
+    }
+
+    postMessage("GET_PROJECT_KEY");
     postMessage("GET_ACCESS_TOKEN");
 
     window.addEventListener("message", handleRectangleClick);
@@ -125,6 +150,16 @@ function Difference() {
       window.removeEventListener("message", handleRectangleClick);
     };
   }, []);
+
+  useEffect(() => {
+    if (isPaginationClicked.type === "prev") {
+      postMessage("NEXT_DIFFERENCE_RECTANGLE");
+    }
+
+    if (isPaginationClicked.type === "next") {
+      postMessage("PREV_DIFFERENCE_RECTANGLE");
+    }
+  }, [isPaginationClicked]);
 
   return (
     <>
@@ -146,6 +181,20 @@ function Difference() {
         />
       )}
       <Content>
+        <Button
+          className="button-position"
+          size="tiny"
+          usingCase="void"
+          handleClick={ev => {
+            ev.preventDefault();
+
+            setPageId("");
+
+            setIsOpenedPopup(true);
+          }}
+        >
+          버전
+        </Button>
         <h1 className="title">디자인 변경 사항을 확인해 보세요! 👀</h1>
         <Description
           className="description"
@@ -163,22 +212,54 @@ function Difference() {
               </Sentence>
             ))}
         </div>
-        <div className="button">
-          <Button
-            className="re-version"
-            size="medium"
-            usingCase="line"
-            handleClick={ev => {
-              ev.preventDefault();
-
-              setPageId("");
-
-              setIsOpenedPopup(true);
-            }}
-          >
-            버전 재선택
-          </Button>
-        </div>
+        <Pagination>
+          <div className="pagination-content">
+            {pagination && pagination.result
+              ? `${pagination.currentCount} / ${pagination.frameCounts}`
+              : `${pagination.frameCounts}`}
+          </div>
+          {isComparable ? (
+            <>
+              <Button
+                className="pagination-prev-button"
+                size="small"
+                usingCase="line"
+                handleClick={() => setIsPaginationClicked({ type: "prev" })}
+              >
+                이전
+              </Button>
+              <Button
+                className="pagination-next-button"
+                size="small"
+                usingCase="line"
+                handleClick={() => setIsPaginationClicked({ type: "next" })}
+              >
+                다음
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                className="pagination-prev-button pagination-button-disable"
+                size="small"
+                usingCase="line"
+                disabled
+                handleClick={() => {}}
+              >
+                이전
+              </Button>
+              <Button
+                className="pagination-next-button pagination-button-disable"
+                size="small"
+                usingCase="line"
+                disabled
+                handleClick={() => {}}
+              >
+                다음
+              </Button>
+            </>
+          )}
+        </Pagination>
         {toast.status && (
           <ToastPopup setToast={setToast} message={toast.message} />
         )}
@@ -187,10 +268,45 @@ function Difference() {
   );
 }
 
+const Pagination = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  .pagination-content {
+    display: flex;
+    width: 100px;
+    margin-right: 10px;
+    align-items: center;
+    text-align: left;
+  }
+
+  .pagination-prev-button {
+    min-width: 140px !important;
+    margin-right: 10px;
+    text-align: center;
+  }
+
+  .pagination-next-button {
+    min-width: 140px !important;
+    text-align: center;
+  }
+
+  .pagination-button-disable {
+    border: 1px solid #868e96 !important;
+    background-color: #868e96 !important;
+  }
+`;
+
 const Content = styled.div`
   box-sizing: border-box;
   width: 100%;
   padding: 0px 24px;
+
+  .button-position {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+  }
 
   .title {
     margin-bottom: 4px;
@@ -235,11 +351,6 @@ const Content = styled.div`
   .description {
     color: #868e96;
     margin-bottom: 24px;
-  }
-
-  .button {
-    position: fixed;
-    bottom: 24px;
   }
 `;
 
