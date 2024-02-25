@@ -281,14 +281,14 @@ const Pagination = styled.div`
   }
 
   .pagination-prev-button {
-    border: 1px solid #868e96 !important;
+    border: 1px solid #adb5bd;
     min-width: 140px !important;
     margin-right: 10px;
     text-align: center;
   }
 
   .pagination-next-button {
-    border: 1px solid #868e96 !important;
+    border: 1px solid #adb5bd;
     min-width: 140px !important;
     text-align: center;
   }

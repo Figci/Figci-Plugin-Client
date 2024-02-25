@@ -76,6 +76,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
       }
 
       differenceRectangleIdList.push(differenceRectangle.id);
+
       modifiedFrames[frameId].isNew = false;
     }
   }
@@ -100,6 +101,8 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
         );
 
         differenceRectangleIdList.push(differenceRectangle.id);
+
+        differenceRectangleIdList.reverse();
       }
     }
   }

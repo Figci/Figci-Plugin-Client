@@ -30,7 +30,7 @@ const BUTTON_SIZES = {
 
 const USING_CASES = {
   void: css`
-    --button-color: #ffffff;
+    --button-color: #000000;
     --button-background-color: #f1f3f5;
   `,
   solid: css`
