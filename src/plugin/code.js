@@ -154,15 +154,6 @@ figma.ui.onmessage = async message => {
     });
   }
 
-  if (message.type === "GET_PROJECT_KEY") {
-    const projectKey = figma.fileKey;
-
-    figma.ui.postMessage({
-      type: "GET_PROJECT_KEY",
-      content: projectKey,
-    });
-  }
-
   if (message.type === "GET_CURRENT_PAGE_ID") {
     const currentPageId = figma.currentPage.id;
 
