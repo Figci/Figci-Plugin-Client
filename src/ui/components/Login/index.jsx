@@ -67,7 +67,7 @@ function Login() {
 }
 
 const LogoImage = styled.img`
-  width: 120px;
+  width: 100px;
   margin-bottom: 24px;
 `;
 
@@ -76,7 +76,7 @@ const Description = styled.span`
   margin-bottom: 36px;
 
   color: #343e40;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-align: center;
   line-height: 24px;
 `;
