@@ -16,7 +16,7 @@ function App() {
         <Route path="/" exact element={<Login />} />
         <Route path="/onboarding" exact element={<Onboarding />} />
         <Route element={<Layout />}>
-          <Route path="/" element={<NewProject />} />
+          <Route path="/new" element={<NewProject />} />
           <Route path="/version" element={<ProjectVersion />} />
           <Route path="/result" element={<Difference />} />
         </Route>
