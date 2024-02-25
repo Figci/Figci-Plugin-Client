@@ -18,15 +18,14 @@ import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
 import isOwnProperty from "../../../utils/isOwnProperty";
 import postMessage from "../../../utils/postMessage";
 import processDifferences from "../../../utils/processDifferences";
-import postMessage from "../../../utils/postMessage";
-import isOwnProperty from "../../../utils/isOwnProperty";
 
 function Difference() {
   const [toast, setToast] = useState({});
   const [isOpenedPopup, setIsOpenedPopup] = useState(false);
-  const [projectStatus, setProjectStatus] = useState({});
   const [isComparable, setIsComparable] = useState(false);
   const [pagination, setPagination] = useState("");
+  const [pageId, setPageId] = useState("");
+  const [accessToken, setAccessToken] = useState("");
   const [isPaginationClicked, setIsPaginationClicked] = useState("");
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
@@ -77,8 +76,6 @@ function Difference() {
         setIsComparable(false);
         setPageId("");
         setPagination({ result: false, frameCounts: "- / -" });
-
-        setPageId("");
 
         return;
       }
