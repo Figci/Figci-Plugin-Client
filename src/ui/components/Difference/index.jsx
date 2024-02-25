@@ -18,6 +18,8 @@ import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
 import isOwnProperty from "../../../utils/isOwnProperty";
 import postMessage from "../../../utils/postMessage";
 import processDifferences from "../../../utils/processDifferences";
+import postMessage from "../../../utils/postMessage";
+import isOwnProperty from "../../../utils/isOwnProperty";
 
 function Difference() {
   const [toast, setToast] = useState({});
