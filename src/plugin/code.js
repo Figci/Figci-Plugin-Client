@@ -184,6 +184,12 @@ figma.ui.onmessage = async message => {
     clearRectangleNode();
 
     renderDifferenceRectangle(differences, modifiedFrames);
+
+    const startNodeId = differenceRectangleIdList[0];
+    const startNode = figma.getNodeById(startNodeId);
+
+    figma.viewport.scrollAndZoomIntoView([startNode]);
+    figma.currentPage.selection = [startNode];
   }
 
   if (message.type === "PREV_DIFFERENCE_RECTANGLE") {
