@@ -12,12 +12,13 @@ import useProjectStore from "../../../store/project";
 import useProjectVersionStore from "../../../store/projectVersion";
 import usePageListStore from "../../../store/projectPage";
 
+import getCommonPages from "../../../services/getCommonPages";
+import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
+
 import postMessage from "../../../utils/postMessage";
 import createOption from "../../../utils/createOption";
 import isCommonPage from "../../../utils/isCommonPage";
 import isOwnProperty from "../../../utils/isOwnProperty";
-import getCommonPages from "../../../services/getCommonPages";
-import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
 
 function ProjectVersion() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function ProjectVersion() {
     isError,
     error,
   } = getDiffingResultQuery(
-    projectInformation.projectKey,
+    project.projectKey,
     project.beforeVersionId,
     project.afterVersionId,
     commonPageId,
@@ -78,15 +79,6 @@ function ProjectVersion() {
       const pageId = ev.data.pluginMessage.content;
 
       setProjectInformation(currentState => ({ ...currentState, pageId }));
-    }
-
-    if (ev.data.pluginMessage.type === "GET_PROJECT_KEY") {
-      const projectKey = ev.data.pluginMessage.content;
-
-      setProjectInformation(currentState => ({
-        ...currentState,
-        projectKey,
-      }));
     }
 
     if (ev.data.pluginMessage.type === "GET_ACCESS_TOKEN") {
@@ -131,14 +123,10 @@ function ProjectVersion() {
     }
 
     const { beforeVersion } = selectedBefore;
-    const { afterVersionId } = project;
-    const { projectKey, accessToken } = projectInformation;
-
     const responseResult = await getCommonPages(
-      projectKey,
+      project.projectKey,
       beforeVersion,
-      afterVersionId,
-      accessToken,
+      project.afterVersionId,
       projectInformation.accessToken,
     );
 
@@ -174,7 +162,6 @@ function ProjectVersion() {
 
   useEffect(() => {
     postMessage("GET_CURRENT_PAGE_ID");
-    postMessage("GET_PROJECT_KEY");
     postMessage("GET_ACCESS_TOKEN");
 
     window.addEventListener("message", handleProjectInformation);
