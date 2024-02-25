@@ -186,12 +186,56 @@ figma.ui.onmessage = async message => {
     renderDifferenceRectangle(differences, modifiedFrames);
   }
 
-  if (message.type === "NEXT_DIFFERENCE_RECTANGLE") {
-    figma.notify(`이전 변경사항 노드 버튼이 선택되었습니다.`);
+  if (message.type === "PREV_DIFFERENCE_RECTANGLE") {
+    const isSelectedNode = figma.currentPage.selection[0];
+
+    if (
+      isSelectedNode &&
+      differenceRectangleIdList.includes(isSelectedNode.id)
+    ) {
+      const currentNodeId = figma.currentPage.selection[0].id;
+      const currentNodeIndex = differenceRectangleIdList.indexOf(currentNodeId);
+      const prevNodeIndex =
+        (currentNodeIndex - 1) % differenceRectangleIdList.length;
+      const prevNodeId = differenceRectangleIdList[prevNodeIndex];
+      const prevNode = figma.getNodeById(prevNodeId);
+
+      figma.viewport.scrollAndZoomIntoView([prevNode]);
+      figma.currentPage.selection = [prevNode];
+    } else {
+      const startNodeId = differenceRectangleIdList[0];
+      const startNode = figma.getNodeById(startNodeId);
+
+      figma.viewport.scrollAndZoomIntoView([startNode]);
+      figma.currentPage.selection = [startNode];
+    }
+    figma.notify(`이전 변경 사항이 선택 되었습니다.`);
   }
 
-  if (message.type === "PREV_DIFFERENCE_RECTANGLE") {
-    figma.notify(`다음 변경사항 노드 버튼이 선택되었습니다.`);
+  if (message.type === "NEXT_DIFFERENCE_RECTANGLE") {
+    const isSelectedNode = figma.currentPage.selection[0];
+
+    if (
+      isSelectedNode &&
+      differenceRectangleIdList.includes(isSelectedNode.id)
+    ) {
+      const currentNodeId = figma.currentPage.selection[0].id;
+      const currentNodeIndex = differenceRectangleIdList.indexOf(currentNodeId);
+      const nextNodeIndex =
+        (currentNodeIndex + 1) % differenceRectangleIdList.length;
+      const nextNodeId = differenceRectangleIdList[nextNodeIndex];
+      const nextNode = figma.getNodeById(nextNodeId);
+
+      figma.viewport.scrollAndZoomIntoView([nextNode]);
+      figma.currentPage.selection = [nextNode];
+    } else {
+      const startNodeId = differenceRectangleIdList[0];
+      const startNode = figma.getNodeById(startNodeId);
+
+      figma.viewport.scrollAndZoomIntoView([startNode]);
+      figma.currentPage.selection = [startNode];
+    }
+    figma.notify(`이전 변경 사항이 선택 되었습니다.`);
   }
 };
 

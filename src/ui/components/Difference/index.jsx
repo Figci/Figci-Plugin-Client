@@ -153,11 +153,11 @@ function Difference() {
 
   useEffect(() => {
     if (isPaginationClicked.type === "prev") {
-      postMessage("NEXT_DIFFERENCE_RECTANGLE");
+      postMessage("PREV_DIFFERENCE_RECTANGLE");
     }
 
     if (isPaginationClicked.type === "next") {
-      postMessage("PREV_DIFFERENCE_RECTANGLE");
+      postMessage("NEXT_DIFFERENCE_RECTANGLE");
     }
   }, [isPaginationClicked]);
 
