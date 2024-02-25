@@ -193,7 +193,7 @@ function Difference() {
             setIsOpenedPopup(true);
           }}
         >
-          버전
+          버전 재선택
         </Button>
         <h1 className="title">디자인 변경 사항을 확인해 보세요! 👀</h1>
         <Description
@@ -281,12 +281,14 @@ const Pagination = styled.div`
   }
 
   .pagination-prev-button {
+    border: 1px solid #868e96 !important;
     min-width: 140px !important;
     margin-right: 10px;
     text-align: center;
   }
 
   .pagination-next-button {
+    border: 1px solid #868e96 !important;
     min-width: 140px !important;
     text-align: center;
   }
