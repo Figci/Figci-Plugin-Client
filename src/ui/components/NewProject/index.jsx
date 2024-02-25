@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import Button from "../shared/Button";
+import Description from "../shared/Description";
 import Modal from "../shared/Modal";
 import Loading from "../shared/Loading";
-import Button from "../shared/Button";
 import ToastPopup from "../shared/Toast";
 
 import useProjectVersionStore from "../../../store/projectVersion";
@@ -45,7 +46,6 @@ function NewProject() {
 
       if (allVersions.result === "error") {
         setIsLoading(false);
-
         setToast({ status: true, message: allVersions.message });
 
         return;
@@ -65,6 +65,8 @@ function NewProject() {
 
       navigate("/version");
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -117,11 +119,17 @@ function NewProject() {
               placeholder="url 주소를 입력해주세요. (예: www.figma.com/abc)"
               onChange={handleChangeInput}
             />
+            <Description
+              className="description"
+              size="medium"
+              align="left"
+              text="맥은 'Command+L', 윈도우는 'Ctrl+L' 키를 누르면 링크가 복사돼요!"
+            />
           </label>
           <Button
             handleClick={handleSubmitURI}
             usingCase="solid"
-            size="small"
+            size="medium"
             className="next"
           >
             다음
@@ -136,9 +144,6 @@ function NewProject() {
 }
 
 const ContentsWrapper = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
   padding: 24px;
 
   .step {
@@ -152,7 +157,7 @@ const ContentsWrapper = styled.div`
   }
 
   .title {
-    margin-bottom: 48px;
+    padding: 0 0 40px 0;
 
     color: #000000;
     font-size: 1.125rem;
@@ -171,10 +176,10 @@ const ContentsWrapper = styled.div`
     width: 100%;
     height: 48px;
     padding: 0px 12px;
-    border-radius: 4px;
-    border: 1px solid #000000;
     margin-top: 12px;
     margin-bottom: 12px;
+    border: 1.5px solid #000000;
+    border-radius: 4px;
 
     background-color: #ffffff;
     font-size: 0.75rem;
@@ -193,8 +198,15 @@ const ContentsWrapper = styled.div`
     font-weight: 700;
   }
 
+  .description {
+    color: #868e96;
+  }
+
   Button {
-    width: 100%;
+    position: fixed;
+
+    width: 355px;
+    bottom: 24px;
   }
 `;
 
