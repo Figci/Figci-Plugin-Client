@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Onboarding from "./components/Onboarding";
 import ProjectVersion from "./components/ProjectVersion";
 import Difference from "./components/Difference";
+import NewProject from "./components/NewProject";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" exact element={<Login />} />
         <Route path="/onboarding" exact element={<Onboarding />} />
         <Route element={<Layout />}>
+          <Route path="/" element={<NewProject />} />
           <Route path="/version" element={<ProjectVersion />} />
           <Route path="/result" element={<Difference />} />
         </Route>
