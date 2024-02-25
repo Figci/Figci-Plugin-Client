@@ -13,15 +13,16 @@ import usePageListStore from "../../../store/projectPage";
 import useProjectStore from "../../../store/project";
 
 import getDiffingResultQuery from "../../../services/getDiffingResultQuery";
+
 import isOwnProperty from "../../../utils/isOwnProperty";
 import postMessage from "../../../utils/postMessage";
 import processDifferences from "../../../utils/processDifferences";
 
 function Difference() {
   const [toast, setToast] = useState({});
-  const [pageId, setPageId] = useState("");
   const [isOpenedPopup, setIsOpenedPopup] = useState(false);
-  const [projectStatus, setProjectStatus] = useState({});
+  const [accessToken, setAccessToken] = useState("");
+  const [pageId, setPageId] = useState("");
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
     detailOfChanges: ["변경사항을 선택해주세요."],
@@ -32,11 +33,11 @@ function Difference() {
   const { project } = useProjectStore();
 
   const { data: diffingResult, isLoading } = getDiffingResultQuery(
-    projectStatus.projectKey,
+    project.projectKey,
     project.beforeVersionId,
     project.afterVersionId,
     pageId,
-    projectStatus.accessToken,
+    accessToken,
   );
 
   const handleRectangleClick = ev => {
@@ -56,16 +57,10 @@ function Difference() {
       }
     }
 
-    if (ev.data.pluginMessage.type === "GET_PROJECT_KEY") {
-      const projectKey = ev.data.pluginMessage.content;
-
-      setProjectStatus(projectStatus => ({ ...projectStatus, projectKey }));
-    }
-
     if (ev.data.pluginMessage.type === "GET_ACCESS_TOKEN") {
-      const accessToken = ev.data.pluginMessage.content;
+      const token = ev.data.pluginMessage.content;
 
-      setProjectStatus(projectStatus => ({ ...projectStatus, accessToken }));
+      setAccessToken(token);
     }
 
     if (ev.data.pluginMessage.type === "CHANGED_CURRENT_PAGE_ID") {
@@ -122,7 +117,6 @@ function Difference() {
   }, [diffingResult]);
 
   useEffect(() => {
-    postMessage("GET_PROJECT_KEY");
     postMessage("GET_ACCESS_TOKEN");
 
     window.addEventListener("message", handleRectangleClick);
