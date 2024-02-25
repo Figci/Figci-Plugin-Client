@@ -183,13 +183,14 @@ function ProjectVersion() {
       )}
       <Wrapper>
         <ContentHeader>
+          <h1 className="step">STEP 02</h1>
           <h1 className="title">
             현재 버전과 비교할 <br />
             이전 버전을 선택해 주세요.
           </h1>
           <Description
             className="title-description"
-            size="medium"
+            size="large"
             align="left"
             text="현재 보고 있으신 페이지 기준으로 비교해드려요."
           />
@@ -245,7 +246,17 @@ const Wrapper = styled.div`
 `;
 
 const ContentHeader = styled.div`
-  padding: 0 0 48px 0;
+  padding: 0 0 40px 0;
+
+  .step {
+    margin-bottom: 4px;
+
+    color: #2623fb;
+    font-size: 1.125rem;
+    line-height: 28px;
+    text-align: left;
+    font-weight: 800;
+  }
 
   .title {
     color: #000000;
@@ -253,6 +264,10 @@ const ContentHeader = styled.div`
     line-height: 24px;
     text-align: left;
     font-weight: 800;
+  }
+
+  .title-description {
+    margin-top: 4px;
   }
 `;
 
@@ -276,6 +291,12 @@ const VersionForm = styled.form`
     margin-top: 12px;
     border: 1.5px solid #000000;
     border-radius: 4px;
+
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' %3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem top 0.65rem;
+    background-size: 24px;
   }
 
   .beforeVersion {
