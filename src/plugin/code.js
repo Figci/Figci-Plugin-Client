@@ -208,6 +208,7 @@ figma.ui.onmessage = async message => {
       const currentIndex = differenceRectangleIdList.indexOf(currentNodeId);
 
       let nextIndex;
+
       if (message.content === "prev") {
         nextIndex =
           (currentIndex +
