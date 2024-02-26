@@ -26,7 +26,7 @@ function Difference() {
   const [pagination, setPagination] = useState("");
   const [pageId, setPageId] = useState("");
   const [accessToken, setAccessToken] = useState("");
-  const [isPaginationClicked, setIsPaginationClicked] = useState("");
+  const [clickedType, setClickedType] = useState({ type: "" });
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
     detailOfChanges: ["변경사항을 선택해주세요."],
@@ -122,7 +122,7 @@ function Difference() {
         modifiedFrames[frameId].isNew = true;
       }
     }
-
+    setIsComparable(true);
     setPagination({
       result: true,
       currentCount: 0,
@@ -151,14 +151,12 @@ function Difference() {
   }, []);
 
   useEffect(() => {
-    if (isPaginationClicked.type === "prev") {
-      postMessage("PREV_DIFFERENCE_RECTANGLE");
+    if (clickedType.type === "prev") {
+      postMessage("PAGINATION_BUTTON", "prev");
+    } else {
+      postMessage("PAGINATION_BUTTON", "next");
     }
-
-    if (isPaginationClicked.type === "next") {
-      postMessage("NEXT_DIFFERENCE_RECTANGLE");
-    }
-  }, [isPaginationClicked]);
+  }, [clickedType]);
 
   return (
     <>
@@ -223,7 +221,7 @@ function Difference() {
                 className="pagination-prev-button"
                 size="small"
                 usingCase="line"
-                handleClick={() => setIsPaginationClicked({ type: "prev" })}
+                handleClick={() => setClickedType({ type: "prev" })}
               >
                 이전
               </Button>
@@ -231,7 +229,7 @@ function Difference() {
                 className="pagination-next-button"
                 size="small"
                 usingCase="line"
-                handleClick={() => setIsPaginationClicked({ type: "next" })}
+                handleClick={() => setClickedType({ type: "next" })}
               >
                 다음
               </Button>
