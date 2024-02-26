@@ -58,12 +58,12 @@ describe("Difference Component Test", () => {
 
     fireEvent.click(newVersionElement);
 
-    const newVersionModal = screen.getByText("새 버전을 비교하시겠어요?");
+    const newVersionModalElement = screen.getByText("새 버전을 비교하시겠어요?");
     const cancelButtonElement = screen.getByText("아니오");
 
     fireEvent.click(cancelButtonElement);
 
-    expect(newVersionModal).not.toBeInTheDocument();
+    expect(newVersionModalElement).not.toBeInTheDocument();
     expect(cancelButtonElement).not.toBeInTheDocument();
   });
 
