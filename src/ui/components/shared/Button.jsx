@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 const BUTTON_SIZES = {
-  tiny: css`
+  xsmall: css`
     --button-min-width: 95px;
     --button-min-height: 20px;
     --button-font-size: 0.815rem;

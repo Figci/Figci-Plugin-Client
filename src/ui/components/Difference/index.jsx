@@ -296,9 +296,9 @@ const Pagination = styled.div`
   }
 
   .pagination-button-disable {
-    border: 1px solid #868e96 !important;
+    border: 1px solid #868e96;
 
-    background-color: #868e96 !important;
+    background-color: #868e96;
   }
 `;
 
