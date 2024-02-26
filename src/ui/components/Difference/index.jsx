@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { nanoid } from "nanoid";
 
@@ -49,12 +48,14 @@ function Difference() {
   const handleRectangleClick = ev => {
     if (ev.data.pluginMessage.type === "RENDER_DIFFERENCE_INFORMATION") {
       const differences = ev.data.pluginMessage.content;
+
       if (differences === "UNCHANGED_NODE") {
         setDisplayText({
           titleOfChanges: null,
           detailOfChanges: ["변경사항을 선택해주세요."],
           className: "default",
         });
+
         return;
       }
 
