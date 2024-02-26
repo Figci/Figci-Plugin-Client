@@ -22,7 +22,10 @@ import processDifferences from "../../../utils/processDifferences";
 function Difference() {
   const [toast, setToast] = useState({});
   const [isOpenedPopup, setIsOpenedPopup] = useState(false);
-  const [pagination, setPagination] = useState("");
+  const [pagination, setPagination] = useState({
+    result: false,
+    frameCounts: "- / -",
+  });
   const [accessToken, setAccessToken] = useState("");
   const [pageId, setPageId] = useState("");
   const [clickedType, setClickedType] = useState({ type: "" });
@@ -208,7 +211,7 @@ function Difference() {
         </div>
         <Pagination>
           <div className="pagination-content">
-            {pagination && pagination.result
+            {pagination.result
               ? `${pagination.currentCount} / ${pagination.frameCounts}`
               : `${pagination.frameCounts}`}
           </div>
