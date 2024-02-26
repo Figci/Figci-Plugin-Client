@@ -265,31 +265,35 @@ figma.on("selectionchange", () => {
       type: "RENDER_DIFFERENCE_INFORMATION",
       content: { differenceInformation },
     });
-  } else {
+
+    return;
+  }
+
+  figma.ui.postMessage({
+    type: "RENDER_DIFFERENCE_INFORMATION",
+    content: "UNCHANGED_NODE",
+  });
+
+  if (differencesNumber) {
     figma.ui.postMessage({
-      type: "RENDER_DIFFERENCE_INFORMATION",
-      content: "UNCHANGED_NODE",
+      type: "FRAME_PAGINATION",
+      content: {
+        result: true,
+        currentCount: 0,
+        frameCounts: differencesNumber,
+      },
     });
 
-    if (differencesNumber) {
-      figma.ui.postMessage({
-        type: "FRAME_PAGINATION",
-        content: {
-          result: true,
-          currentCount: 0,
-          frameCounts: differencesNumber,
-        },
-      });
-    } else {
-      figma.ui.postMessage({
-        type: "FRAME_PAGINATION",
-        content: {
-          result: false,
-          frameCounts: "- / -",
-        },
-      });
-    }
+    return;
   }
+
+  figma.ui.postMessage({
+    type: "FRAME_PAGINATION",
+    content: {
+      result: false,
+      frameCounts: "- / -",
+    },
+  });
 });
 
 figma.on("currentpagechange", () => {
