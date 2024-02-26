@@ -71,11 +71,6 @@ function ProjectVersion() {
       navigate("/result", {
         state: {
           isExistDiffingResult: true,
-          paginationInitialValue: {
-            result: true,
-            currentCount: 0,
-            frameCounts: Object.keys(diffingResult.content.differences).length,
-          },
         },
       });
     }
