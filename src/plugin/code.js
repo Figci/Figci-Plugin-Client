@@ -202,7 +202,7 @@ figma.ui.onmessage = async message => {
 
   if (message.type === "PAGINATION_BUTTON") {
     const currentSelection = figma.currentPage.selection[0];
-    const differencesNumber = differenceRectangleIdList.length;
+    const differencesLength = differenceRectangleIdList.length;
 
     if (
       currentSelection &&
@@ -218,12 +218,12 @@ figma.ui.onmessage = async message => {
         nextIndex =
           (currentIndex +
             CONSTANTS.PAGINATION.INDEX_DECREASE +
-            differencesNumber) %
-          differencesNumber;
+            differencesLength) %
+          differencesLength;
       } else {
         nextIndex =
           (currentIndex + CONSTANTS.PAGINATION.INDEX_INCREASE) %
-          differencesNumber;
+          differencesLength;
       }
 
       focusScreen(nextIndex);
@@ -242,7 +242,7 @@ figma.on("selectionchange", () => {
     return;
   }
 
-  const differencesNumber = differenceRectangleIdList.length;
+  const differencesLength = differenceRectangleIdList.length;
 
   if (differenceRectangleIdList.includes(currentSelection.id)) {
     const differenceInformation = currentSelection.getPluginData(
@@ -257,7 +257,7 @@ figma.on("selectionchange", () => {
       content: {
         result: true,
         currentCount: currentFrameIndex,
-        frameCounts: differencesNumber,
+        frameCounts: differencesLength,
       },
     });
 
@@ -274,13 +274,13 @@ figma.on("selectionchange", () => {
     content: "UNCHANGED_NODE",
   });
 
-  if (differencesNumber) {
+  if (differencesLength) {
     figma.ui.postMessage({
       type: "FRAME_PAGINATION",
       content: {
         result: true,
         currentCount: 0,
-        frameCounts: differencesNumber,
+        frameCounts: differencesLength,
       },
     });
 

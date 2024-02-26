@@ -267,15 +267,14 @@ function Difference() {
 
 const Pagination = styled.div`
   display: flex;
-
   justify-content: space-between;
 
   .pagination-content {
     display: flex;
+    align-items: center;
     margin-right: 10px;
     width: 100px;
 
-    align-items: center;
     text-align: left;
   }
 
