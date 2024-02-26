@@ -22,10 +22,9 @@ import processDifferences from "../../../utils/processDifferences";
 function Difference() {
   const [toast, setToast] = useState({});
   const [isOpenedPopup, setIsOpenedPopup] = useState(false);
-  const [isComparable, setIsComparable] = useState(false);
   const [pagination, setPagination] = useState("");
-  const [pageId, setPageId] = useState("");
   const [accessToken, setAccessToken] = useState("");
+  const [pageId, setPageId] = useState("");
   const [clickedType, setClickedType] = useState({ type: "" });
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
@@ -69,19 +68,23 @@ function Difference() {
       setAccessToken(token);
     }
 
+    if (ev.data.pluginMessage.type === "GET_CURRENT_PAGE_ID") {
+      const pageId = ev.data.pluginMessage.content;
+
+      setPageId(pageId);
+    }
+
     if (ev.data.pluginMessage.type === "CHANGED_CURRENT_PAGE_ID") {
       const pageId = ev.data.pluginMessage.content;
       const isComparablePage = allPageIds.includes(pageId);
 
       if (!isComparablePage) {
-        setIsComparable(false);
         setPageId("");
         setPagination({ result: false, frameCounts: "- / -" });
 
         return;
       }
 
-      setIsComparable(true);
       setPageId(pageId);
     }
 
@@ -91,6 +94,17 @@ function Difference() {
       setPagination(framePagination);
     }
   };
+
+  useEffect(() => {
+    window.addEventListener("message", handleRectangleClick);
+
+    postMessage("GET_CURRENT_PAGE_ID");
+    postMessage("GET_ACCESS_TOKEN");
+
+    return () => {
+      window.removeEventListener("message", handleRectangleClick);
+    };
+  }, []);
 
   useEffect(() => {
     setDisplayText({
@@ -106,7 +120,6 @@ function Difference() {
     }
 
     if (diffingResult.result === "error") {
-      setIsComparable(false);
       setPagination({ result: false, frameCounts: "- / -" });
       setToast({ status: true, message: diffingResult.message });
 
@@ -125,7 +138,6 @@ function Difference() {
       }
     }
 
-    setIsComparable(true);
     setPagination({
       result: true,
       currentCount: 0,
@@ -136,27 +148,13 @@ function Difference() {
   }, [diffingResult]);
 
   useEffect(() => {
-    const receivedFromVersionPage = location.state;
-
-    if (receivedFromVersionPage) {
-      setIsComparable(receivedFromVersionPage.isExistDiffingResult);
-    }
-
-    postMessage("GET_ACCESS_TOKEN");
-
-    window.addEventListener("message", handleRectangleClick);
-
-    return () => {
-      window.removeEventListener("message", handleRectangleClick);
-    };
-  }, []);
-
-  useEffect(() => {
     if (clickedType.type === "prev") {
       postMessage("PAGINATION_BUTTON", "prev");
-    } else {
-      postMessage("PAGINATION_BUTTON", "next");
+
+      return;
     }
+
+    postMessage("PAGINATION_BUTTON", "next");
   }, [clickedType]);
 
   return (
@@ -181,7 +179,7 @@ function Difference() {
       <Content>
         <Button
           className="button-position"
-          size="tiny"
+          size="xsmall"
           usingCase="void"
           handleClick={ev => {
             ev.preventDefault();
@@ -216,7 +214,7 @@ function Difference() {
               ? `${pagination.currentCount} / ${pagination.frameCounts}`
               : `${pagination.frameCounts}`}
           </div>
-          {isComparable ? (
+          {diffingResult?.result === "success" ? (
             <>
               <Button
                 className="pagination-prev-button"

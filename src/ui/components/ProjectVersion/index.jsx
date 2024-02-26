@@ -68,11 +68,7 @@ function ProjectVersion() {
 
       postMessage("POST_DIFFING_RESULT", { differences, modifiedFrames });
 
-      navigate("/result", {
-        state: {
-          isExistDiffingResult: true,
-        },
-      });
+      navigate("/result");
     }
   }, [diffingResult]);
 
