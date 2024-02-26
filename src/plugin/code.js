@@ -25,6 +25,10 @@ const CONSTANTS = {
   },
   MIN_SIZE_VALUE: 1,
   TIME_GAP_MS: 9 * 60 * 60 * 1000,
+  PAGINATION: {
+    INDEX_INCREASE: 1,
+    INDEX_DECREASE: -1,
+  },
 };
 
 const isOwnProperty = (targetObject, targetProperty) => {
@@ -205,9 +209,15 @@ figma.ui.onmessage = async message => {
 
       let nextIndex;
       if (message.content === "prev") {
-        nextIndex = (currentIndex - 1 + differencesNumber) % differencesNumber;
+        nextIndex =
+          (currentIndex +
+            CONSTANTS.PAGINATION.INDEX_DECREASE +
+            differencesNumber) %
+          differencesNumber;
       } else {
-        nextIndex = (currentIndex + 1) % differencesNumber;
+        nextIndex =
+          (currentIndex + CONSTANTS.PAGINATION.INDEX_INCREASE) %
+          differencesNumber;
       }
 
       const nextNodeId = differenceRectangleIdList[nextIndex];
@@ -232,7 +242,7 @@ figma.on("selectionchange", () => {
     return;
   }
 
-  const totalFrameCount = differenceRectangleIdList.length;
+  const differencesNumber = differenceRectangleIdList.length;
 
   if (differenceRectangleIdList.includes(currentSelection.id)) {
     const differenceInformation = currentSelection.getPluginData(
@@ -247,7 +257,7 @@ figma.on("selectionchange", () => {
       content: {
         result: true,
         currentCount: currentFrameIndex,
-        frameCounts: totalFrameCount,
+        frameCounts: differencesNumber,
       },
     });
 
@@ -261,13 +271,13 @@ figma.on("selectionchange", () => {
       content: "UNCHANGED_NODE",
     });
 
-    if (totalFrameCount) {
+    if (differencesNumber) {
       figma.ui.postMessage({
         type: "FRAME_PAGINATION",
         content: {
           result: true,
           currentCount: 0,
-          frameCounts: totalFrameCount,
+          frameCounts: differencesNumber,
         },
       });
     } else {
