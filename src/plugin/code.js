@@ -35,6 +35,14 @@ const isOwnProperty = (targetObject, targetProperty) => {
   return Object.prototype.hasOwnProperty.call(targetObject, targetProperty);
 };
 
+const focusScreen = (nodeIndex = 0) => {
+  const targetNodeId = differenceRectangleIdList[nodeIndex];
+  const targetNode = figma.getNodeById(targetNodeId);
+
+  figma.viewport.scrollAndZoomIntoView([targetNode]);
+  figma.currentPage.selection = [targetNode];
+};
+
 const renderDifferenceRectangle = (differences, modifiedFrames) => {
   for (const nodeId in differences) {
     if (isOwnProperty(differences, nodeId)) {
@@ -189,11 +197,7 @@ figma.ui.onmessage = async message => {
 
     renderDifferenceRectangle(differences, modifiedFrames);
 
-    const startNodeId = differenceRectangleIdList[0];
-    const startNode = figma.getNodeById(startNodeId);
-
-    figma.viewport.scrollAndZoomIntoView([startNode]);
-    figma.currentPage.selection = [startNode];
+    focusScreen();
   }
 
   if (message.type === "PAGINATION_BUTTON") {
@@ -204,8 +208,9 @@ figma.ui.onmessage = async message => {
       currentSelection &&
       differenceRectangleIdList.includes(currentSelection.id)
     ) {
-      const currentNodeId = figma.currentPage.selection[0].id;
-      const currentIndex = differenceRectangleIdList.indexOf(currentNodeId);
+      const currentIndex = differenceRectangleIdList.indexOf(
+        currentSelection.id,
+      );
 
       let nextIndex;
 
@@ -221,18 +226,12 @@ figma.ui.onmessage = async message => {
           differencesNumber;
       }
 
-      const nextNodeId = differenceRectangleIdList[nextIndex];
-      const nextNode = figma.getNodeById(nextNodeId);
+      focusScreen(nextIndex);
 
-      figma.viewport.scrollAndZoomIntoView([nextNode]);
-      figma.currentPage.selection = [nextNode];
-    } else {
-      const startNodeId = differenceRectangleIdList[0];
-      const startNode = figma.getNodeById(startNodeId);
-
-      figma.viewport.scrollAndZoomIntoView([startNode]);
-      figma.currentPage.selection = [startNode];
+      return;
     }
+
+    focusScreen();
   }
 };
 
