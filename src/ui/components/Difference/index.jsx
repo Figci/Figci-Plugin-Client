@@ -272,8 +272,8 @@ const Pagination = styled.div`
   .pagination-content {
     display: flex;
     align-items: center;
-    margin-right: 10px;
     width: 100px;
+    margin-right: 10px;
 
     text-align: left;
   }
@@ -287,8 +287,8 @@ const Pagination = styled.div`
   }
 
   .pagination-next-button {
-    border: 1px solid #adb5bd;
     min-width: 140px !important;
+    border: 1px solid #adb5bd;
 
     text-align: center;
   }
@@ -352,8 +352,9 @@ const Content = styled.div`
   }
 
   .description {
-    color: #868e96;
     margin-bottom: 24px;
+
+    color: #868e96;
   }
 `;
 
