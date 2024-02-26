@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { nanoid } from "nanoid";
 
-import { useLocation } from "react-router-dom";
 import Description from "../shared/Description";
 import Button from "../shared/Button";
 import ToastPopup from "../shared/Toast";
@@ -32,6 +32,7 @@ function Difference() {
     detailOfChanges: ["변경사항을 선택해주세요."],
     className: "default",
   });
+
   const location = useLocation();
 
   const { allPageIds } = usePageListStore();
@@ -90,6 +91,7 @@ function Difference() {
       setPagination(framePagination);
     }
   };
+
   useEffect(() => {
     setDisplayText({
       titleOfChanges: null,
@@ -122,6 +124,7 @@ function Difference() {
         modifiedFrames[frameId].isNew = true;
       }
     }
+
     setIsComparable(true);
     setPagination({
       result: true,
@@ -137,10 +140,8 @@ function Difference() {
 
     if (receivedFromVersionPage) {
       setIsComparable(receivedFromVersionPage.isExistDiffingResult);
-      setPagination(receivedFromVersionPage.paginationInitialValue);
     }
 
-    postMessage("GET_PROJECT_KEY");
     postMessage("GET_ACCESS_TOKEN");
 
     window.addEventListener("message", handleRectangleClick);
