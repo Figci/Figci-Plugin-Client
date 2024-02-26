@@ -130,7 +130,7 @@ const formatTime = dateString => {
   const koreaTime = new Date(utcMS + CONSTANTS.TIME_GAP_MS);
 
   const year = koreaTime.getFullYear();
-  const month = koreaTime.getMonth();
+  const month = koreaTime.getMonth() + 1;
   const date = koreaTime.getDate();
 
   const hour = koreaTime.getHours();
