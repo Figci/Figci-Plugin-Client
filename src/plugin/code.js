@@ -192,44 +192,25 @@ figma.ui.onmessage = async message => {
     figma.currentPage.selection = [startNode];
   }
 
-  if (message.type === "PREV_DIFFERENCE_RECTANGLE") {
-    const isSelectedNode = figma.currentPage.selection[0];
+  if (message.type === "PAGINATION_BUTTON") {
+    const currentSelection = figma.currentPage.selection[0];
+    const differencesNumber = differenceRectangleIdList.length;
 
     if (
-      isSelectedNode &&
-      differenceRectangleIdList.includes(isSelectedNode.id)
+      currentSelection &&
+      differenceRectangleIdList.includes(currentSelection.id)
     ) {
       const currentNodeId = figma.currentPage.selection[0].id;
-      const currentNodeIndex = differenceRectangleIdList.indexOf(currentNodeId);
-      const prevNodeIndex =
-        (currentNodeIndex - 1) % differenceRectangleIdList.length;
-      const prevNodeId = differenceRectangleIdList[prevNodeIndex];
-      const prevNode = figma.getNodeById(prevNodeId);
+      const currentIndex = differenceRectangleIdList.indexOf(currentNodeId);
 
-      figma.viewport.scrollAndZoomIntoView([prevNode]);
-      figma.currentPage.selection = [prevNode];
-    } else {
-      const startNodeId = differenceRectangleIdList[0];
-      const startNode = figma.getNodeById(startNodeId);
+      let nextIndex;
+      if (message.content === "prev") {
+        nextIndex = (currentIndex - 1 + differencesNumber) % differencesNumber;
+      } else {
+        nextIndex = (currentIndex + 1) % differencesNumber;
+      }
 
-      figma.viewport.scrollAndZoomIntoView([startNode]);
-      figma.currentPage.selection = [startNode];
-    }
-    figma.notify(`이전 변경 사항이 선택 되었습니다.`);
-  }
-
-  if (message.type === "NEXT_DIFFERENCE_RECTANGLE") {
-    const isSelectedNode = figma.currentPage.selection[0];
-
-    if (
-      isSelectedNode &&
-      differenceRectangleIdList.includes(isSelectedNode.id)
-    ) {
-      const currentNodeId = figma.currentPage.selection[0].id;
-      const currentNodeIndex = differenceRectangleIdList.indexOf(currentNodeId);
-      const nextNodeIndex =
-        (currentNodeIndex + 1) % differenceRectangleIdList.length;
-      const nextNodeId = differenceRectangleIdList[nextNodeIndex];
+      const nextNodeId = differenceRectangleIdList[nextIndex];
       const nextNode = figma.getNodeById(nextNodeId);
 
       figma.viewport.scrollAndZoomIntoView([nextNode]);
@@ -241,26 +222,25 @@ figma.ui.onmessage = async message => {
       figma.viewport.scrollAndZoomIntoView([startNode]);
       figma.currentPage.selection = [startNode];
     }
-    figma.notify(`이전 변경 사항이 선택 되었습니다.`);
   }
 };
 
 figma.on("selectionchange", () => {
-  const selectedNode = figma.currentPage.selection[0];
+  const currentSelection = figma.currentPage.selection[0];
 
-  if (!selectedNode) {
+  if (!currentSelection) {
     return;
   }
 
   const totalFrameCount = differenceRectangleIdList.length;
 
-  if (differenceRectangleIdList.includes(selectedNode.id)) {
-    const differenceInformation = selectedNode.getPluginData(
+  if (differenceRectangleIdList.includes(currentSelection.id)) {
+    const differenceInformation = currentSelection.getPluginData(
       "differenceInformation",
     );
 
     const currentFrameIndex =
-      differenceRectangleIdList.indexOf(selectedNode.id) + 1;
+      differenceRectangleIdList.indexOf(currentSelection.id) + 1;
 
     figma.ui.postMessage({
       type: "FRAME_PAGINATION",
