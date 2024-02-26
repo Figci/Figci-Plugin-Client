@@ -268,31 +268,36 @@ function Difference() {
 
 const Pagination = styled.div`
   display: flex;
+
   justify-content: space-between;
 
   .pagination-content {
     display: flex;
-    width: 100px;
     margin-right: 10px;
+    width: 100px;
+
     align-items: center;
     text-align: left;
   }
 
   .pagination-prev-button {
-    border: 1px solid #adb5bd;
     min-width: 140px !important;
     margin-right: 10px;
+    border: 1px solid #adb5bd;
+
     text-align: center;
   }
 
   .pagination-next-button {
     border: 1px solid #adb5bd;
     min-width: 140px !important;
+
     text-align: center;
   }
 
   .pagination-button-disable {
     border: 1px solid #868e96 !important;
+
     background-color: #868e96 !important;
   }
 `;
