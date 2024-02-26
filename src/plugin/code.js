@@ -101,11 +101,11 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
         );
 
         differenceRectangleIdList.push(differenceRectangle.id);
-
-        differenceRectangleIdList.reverse();
       }
     }
   }
+
+  differenceRectangleIdList.reverse();
 };
 
 const clearRectangleNode = () => {
