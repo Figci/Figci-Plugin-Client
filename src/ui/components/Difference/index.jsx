@@ -200,7 +200,7 @@ function Difference() {
           className="description"
           size="large"
           align="left"
-          text="빨강/초록 영역을 선택하시면, 해당 영역에 있는 변경사항을\n자세하게 살펴볼 수 있어요."
+          text="주황(변경 요소)/초록(신규 요소) 영역을 선택하시면,\n해당 영역에 있는 변경 사항을 자세하게 살펴볼 수 있어요."
         />
         <div className={`difference-area ${displayText.className}`}>
           {!displayText.titleOfChanges ? displayText.detailOfChanges[0] : null}
