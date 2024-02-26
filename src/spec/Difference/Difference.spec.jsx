@@ -1,8 +1,8 @@
 import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { beforeEach, afterEach } from "vitest";
+
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-
-import { beforeEach, afterEach } from "vitest";
 
 import Difference from "../../ui/components/Difference";
 
