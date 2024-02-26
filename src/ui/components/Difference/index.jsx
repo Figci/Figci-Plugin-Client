@@ -156,7 +156,11 @@ function Difference() {
       return;
     }
 
-    postMessage("PAGINATION_BUTTON", "next");
+    if (clickedType.type === "next") {
+      postMessage("PAGINATION_BUTTON", "next");
+
+      return;
+    }
   }, [clickedType]);
 
   return (
@@ -185,8 +189,6 @@ function Difference() {
           usingCase="void"
           handleClick={ev => {
             ev.preventDefault();
-
-            setPageId("");
 
             setIsOpenedPopup(true);
           }}
