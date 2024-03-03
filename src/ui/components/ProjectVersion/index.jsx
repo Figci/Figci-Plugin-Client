@@ -117,7 +117,10 @@ function ProjectVersion() {
     if (!selectedBefore.beforeVersion) {
       setIsVersionLoading(false);
 
-      setToast({ status: true, message: "선택하지 않은 버전이 존재합니다." });
+      setToast({
+        status: true,
+        message: "A version is not selected.",
+      });
 
       return;
     }
@@ -146,7 +149,7 @@ function ProjectVersion() {
 
       setToast({
         status: true,
-        message: "선택하신 버전에는 현재 페이지가 존재하지 않습니다!",
+        message: "The selected version doesn't have the current page!",
       });
 
       return;
@@ -175,8 +178,8 @@ function ProjectVersion() {
       {(isLoading || isVersionLoading) && (
         <Modal>
           <Loading
-            title="버전을 비교중이에요!"
-            text="파일의 크기와 페이지의 갯수에 따라 전체 파일을\n비교하는 동안 시간이 많이 걸릴 수 있어요."
+            title="Comparing versions!"
+            text="Comparison time varies\nwith file size and page count."
           />
         </Modal>
       )}
@@ -184,22 +187,22 @@ function ProjectVersion() {
         <ContentHeader>
           <h1 className="step">STEP 02</h1>
           <h1 className="title">
-            현재 버전과 비교할 <br />
-            이전 버전을 선택해 주세요.
+            Please select the previous version <br />
+            to compare with the current version.
           </h1>
           <Description
             className="title-description"
             size="large"
             align="left"
-            text="현재 보고 있으신 페이지 기준으로 비교해드려요."
+            text="We compare based on the page you are currently viewing."
           />
         </ContentHeader>
         <VersionForm>
           <label htmlFor="beforeVersion">
-            이전 버전
+            Previous version
             <select className="beforeDate" onChange={handleChange}>
               <option value="" disabled selected>
-                날짜 선택
+                Select date
               </option>
               {allDates.map(date => {
                 return (
@@ -211,7 +214,7 @@ function ProjectVersion() {
             </select>
             <select className="beforeVersion" onChange={handleChange}>
               <option value="" disabled selected>
-                버전 선택
+                Select version
               </option>
               {selectedBefore.beforeDate &&
                 createOption(byDates[selectedBefore.beforeDate])}
@@ -220,7 +223,7 @@ function ProjectVersion() {
               className="description"
               size="medium"
               align="left"
-              text="지정한 버전 명이 없으면 시간으로 보여요!"
+              text="If there's no specified version name, it's displayed by time!"
             />
           </label>
           <Button
@@ -229,7 +232,7 @@ function ProjectVersion() {
             size="medium"
             className="next"
           >
-            비교하기
+            Compare
           </Button>
         </VersionForm>
       </Wrapper>

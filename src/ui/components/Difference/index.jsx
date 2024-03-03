@@ -30,7 +30,7 @@ function Difference() {
   const [clickedType, setClickedType] = useState({ type: "" });
   const [displayText, setDisplayText] = useState({
     titleOfChanges: null,
-    detailOfChanges: ["변경사항을 선택해주세요."],
+    detailOfChanges: ["Please select the changes."],
     className: "default",
   });
 
@@ -52,7 +52,7 @@ function Difference() {
       if (differences === "UNCHANGED_NODE") {
         setDisplayText({
           titleOfChanges: null,
-          detailOfChanges: ["변경사항을 선택해주세요."],
+          detailOfChanges: ["Please select the changes."],
           className: "default",
         });
 
@@ -115,7 +115,7 @@ function Difference() {
   useEffect(() => {
     setDisplayText({
       titleOfChanges: null,
-      detailOfChanges: ["변경사항을 선택해주세요."],
+      detailOfChanges: ["Please select the changes."],
       className: "default",
     });
   }, [pageId]);
@@ -172,16 +172,16 @@ function Difference() {
       {isLoading && (
         <Modal>
           <Loading
-            title="변경사항 정보를 가져오고 있어요."
-            text="변경사항 정보를 가져오고 있어요.\n정보를 가져오는 동안 잠깐만 기다려주세요."
+            title="Fetching change information."
+            text="Please wait a moment\nwhile we retrieve the information."
           />
         </Modal>
       )}
       {isOpenedPopup && (
         <Popup
-          title="새 버전을 비교하시겠어요?"
-          text="비교하기 버튼을 누르면 현재 페이지의\n변경 사항들이 모두 삭제돼요."
-          buttonName="비교할래요!"
+          title="Compare new version?"
+          text="Clicking the compare button will delete\nall changes on the current page."
+          buttonName="Let's compare!"
           path="/version"
           isOpenedPopup={setIsOpenedPopup}
         />
@@ -197,14 +197,14 @@ function Difference() {
             setIsOpenedPopup(true);
           }}
         >
-          버전 재선택
+          Re-select Version
         </Button>
-        <h1 className="title">디자인 변경 사항을 확인해 보세요! 👀</h1>
+        <h1 className="title">Check out the design changes! 👀</h1>
         <Description
           className="description"
           size="large"
           align="left"
-          text="주황(변경 요소)/초록(신규 요소) 영역을 선택하시면,\n해당 영역에 있는 변경 사항을 자세하게 살펴볼 수 있어요."
+          text="Select the orange(changed elements), green(new elements) areas to examine the changes in detail."
         />
         <div className={`difference-area ${displayText.className}`}>
           {!displayText.titleOfChanges ? displayText.detailOfChanges[0] : null}
@@ -230,7 +230,7 @@ function Difference() {
                 usingCase="line"
                 handleClick={() => setClickedType({ type: "prev" })}
               >
-                이전
+                Previous
               </Button>
               <Button
                 className="pagination-next-button"
@@ -238,7 +238,7 @@ function Difference() {
                 usingCase="line"
                 handleClick={() => setClickedType({ type: "next" })}
               >
-                다음
+                Next
               </Button>
             </>
           ) : (
@@ -250,7 +250,7 @@ function Difference() {
                 disabled
                 handleClick={() => {}}
               >
-                이전
+                Previous
               </Button>
               <Button
                 className="pagination-next-button pagination-button-disable"
@@ -259,7 +259,7 @@ function Difference() {
                 disabled
                 handleClick={() => {}}
               >
-                다음
+                Next
               </Button>
             </>
           )}
