@@ -130,8 +130,6 @@ function ProjectVersion() {
       projectInformation.accessToken,
     );
 
-    setPages(responseResult.content);
-
     if (responseResult.result === "error") {
       setIsVersionLoading(false);
 
@@ -154,6 +152,7 @@ function ProjectVersion() {
       return;
     }
 
+    setPages(responseResult.content);
     setProject({ beforeVersionId: selectedBefore.beforeVersion });
     setCommonPageId(currentPageId);
 

@@ -83,6 +83,10 @@ function Difference() {
       if (!isComparablePage) {
         setPageId("");
         setPagination({ result: false, frameCounts: "- / -" });
+        setToast({
+          status: true,
+          message: "선택하신 버전에는 현재 페이지가 존재하지 않습니다!",
+        });
 
         return;
       }
