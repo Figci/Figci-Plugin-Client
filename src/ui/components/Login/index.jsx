@@ -55,12 +55,12 @@ function Login() {
     <Container>
       <LogoImage className="logo-icon" src={figciLogo} alt="figci-logo-icon" />
       <Description className="description">
-        이전 버전과 현재 실행중인 프로젝트 버전과 비교해서
+        Compare it with the current project version
         <br />
-        디자인 화면의 변경사항을 한눈에 보여드려요!
+        to see all design changes quickly!
       </Description>
       <Button className="login-button" handleClick={onLoginClick} size="medium">
-        피그마 계정으로 로그인
+        Login with Figma account
       </Button>
     </Container>
   );

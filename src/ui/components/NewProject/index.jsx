@@ -83,7 +83,7 @@ function NewProject() {
     if (!isValidFigmaUrl(projectUrl)) {
       setToast({
         status: true,
-        message: "피그마 파일 URL 주소가 아니에요. 다시 입력해주세요🥲",
+        message: "This is not a Figma file URL. Please enter it again🥲",
       });
 
       return;
@@ -97,8 +97,8 @@ function NewProject() {
       {isLoading && (
         <Modal>
           <Loading
-            title="버전 정보를 가져오고 있어요!"
-            text="이전 버전과 현재 버전을 저장하고 있어요.\n버전을 받아오는 동안 잠깐만 기다려주세요."
+            title="Fetching version information!"
+            text="Saving the previous and current versions.\nPlease wait while we retrieve the versions."
           />
         </Modal>
       )}
@@ -107,23 +107,23 @@ function NewProject() {
           <div>
             <h1 className="step">STEP 01</h1>
             <h1 className="title">
-              디자인 변경사항을 확인할 <br />
-              피그마 프로젝트 URL을 입력해주세요.
+              Please enter the Figma project URL <br />
+              to check design changes.
             </h1>
           </div>
           <label htmlFor="projectUrl" className="label">
-            피그마 프로젝트 URL 입력
+            Enter Figma Project URL
             <input
               id="projectUrl"
               defaultValue={project.projectUrl}
-              placeholder="url 주소를 입력해주세요. (예: www.figma.com/abc)"
+              placeholder="Please enter the url address. (e.g., www.figma.com/abc)"
               onChange={handleChangeInput}
             />
             <Description
               className="description"
               size="medium"
               align="left"
-              text="맥은 'Command+L', 윈도우는 'Ctrl+L' 키를 누르면 링크가 복사돼요!"
+              text="On Mac, press 'Command+L', on Windows, 'Ctrl+L' to copy the link!"
             />
           </label>
           <Button
@@ -132,7 +132,7 @@ function NewProject() {
             size="medium"
             className="next"
           >
-            다음
+            Next
           </Button>
         </form>
       </ContentsWrapper>

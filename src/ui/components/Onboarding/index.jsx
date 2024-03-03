@@ -20,16 +20,16 @@ function Onboarding() {
     <OnboardingContainer>
       <img className="logo" src={figciLogo} alt="figci-logo-img" />
       <Title>
-        이전 버전만 선택하면 ✨
+        Just select the previous version ✨
         <br />
-        디자인된 화면의 변경사항을
+        You can see all the changes
         <br />
-        모두 확인할 수 있어요!
+        in the designed screens!
       </Title>
       <ImgOnboarding src={onboarding} alt="onboarding" />
       <div className="button">
         <Button handleClick={handleClick} usingCase="solid" size="medium">
-          좋아요!
+          Great!
         </Button>
       </div>
     </OnboardingContainer>
