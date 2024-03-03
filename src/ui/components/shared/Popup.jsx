@@ -38,7 +38,7 @@ function Popup({ title, text, path, buttonName, isOpenedPopup }) {
             isOpenedPopup(false);
           }}
         >
-          아니오
+          No
         </Button>
       </ButtonWrapper>
     </Modal>
