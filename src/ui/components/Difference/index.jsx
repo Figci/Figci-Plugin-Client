@@ -85,7 +85,7 @@ function Difference() {
         setPagination({ result: false, frameCounts: "- / -" });
         setToast({
           status: true,
-          message: "선택하신 버전에는 현재 페이지가 존재하지 않습니다!",
+          message: "The version you have selected does not have a current page",
         });
 
         return;
