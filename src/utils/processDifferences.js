@@ -21,7 +21,7 @@ const processDifferences = ({ differenceInformation }) => {
   for (const key in modifiedInformation) {
     if (isOwnProperty(modifiedInformation, key)) {
       titleOfChanges.push(key);
-      detailOfChanges.push(`"${modifiedInformation[key]}"(으)로 변경됐어요!`);
+      detailOfChanges.push(`Changed "${modifiedInformation[key]}"`);
     }
   }
 
