@@ -68,7 +68,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
           differenceRectangle.strokeAlign = "OUTSIDE";
           differenceRectangle.setPluginData(
             "differenceInformation",
-            "이전 버전엔 없던 새로운 요소에요!",
+            "New element, not in the previous version!",
           );
 
           break;
@@ -109,7 +109,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
         differenceRectangle.strokeAlign = "OUTSIDE";
         differenceRectangle.setPluginData(
           "differenceInformation",
-          "이전 버전엔 없던 새로운 프레임이에요!",
+          "New frame, absent in the previous version!",
         );
 
         differenceRectangleIdList.push(differenceRectangle.id);
