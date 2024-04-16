@@ -1,6 +1,6 @@
 # Figci-Plugin
 
-<img src="assets/readme/thumbnail_figci.png" width="720" />
+<img src="./assets/readme/thumbnail_figci.png" width="720" />
 
 **Figci (Figma, Compare, Interface designs)**
 
@@ -71,7 +71,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 ### 1) 프로젝트 버전 선택
 
-<img src="assets/readme/gif_version.gif" width="720" alt="버전 선택 gif"/>
+<img src="./assets/readme/gif_version.gif" width="720" alt="버전 선택 gif"/>
 
 → 사용자가 변경사항을 확인하고 싶은 프로젝트의 링크를 입력하면 해당 프로젝트의 모든 버전 리스트가 나타나며, 사용자가 비교하고자 하는 두 버전을 선택할 수 있습니다.
 
@@ -82,7 +82,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 ### 2) 변경사항 시각화
 
-<img src="assets/readme/gif_difference.gif" width="720" alt="변경사항 시각화 gif"/>
+<img src="./assets/readme/gif_difference.gif" width="720" alt="변경사항 시각화 gif"/>
 
 → 사용자가 선택한 두 버전에 공통으로 존재하는 페이지 중 하나를 선택하면 해당 페이지에 있는
 모든 변경사항이 있는 프레임들을 렌더링한 뒤, 변경사항을 시각화합니다.
@@ -96,7 +96,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 ### 새로운 버전 선택 및 피그마로 이동하기
 
-<img src="assets/readme/gif_difference.gif" width="720" alt="새 버전 선택 gif"/>
+<img src="./assets/readme/gif_difference.gif" width="720" alt="새 버전 선택 gif"/>
 
 → 사용자가 변경사항을 확인하다가 새로운 버전 비교를 원할 경우, 버전 재선택 버튼을 클릭하면 버전 선택 화면으로 리디렉션됩니다.<br />
 
@@ -107,7 +107,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 ### 3) 변경사항 페이지네이션 (플러그인)
 
-<img src="assets/readme/gif_pagination.gif" width="720" alt="페이지네이션 gif"/>
+<img src="./assets/readme/gif_pagination.gif" width="720" alt="페이지네이션 gif"/>
 
 → 변경사항이 있는 모든 요소들을 직접 클릭해서 확인 할 수도 있지만,
 화살표 버튼을 통해서 변경사항이 있는 요소들을 하나씩 확인 할 수도 있습니다.
@@ -125,7 +125,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 처음에는 Figma API를 통해 받은 두 서브트리를 동시에 순회하면서, 같은 위치에 있는 노드들의 프로퍼티를 비교하여 차이점을 찾았습니다.<br />
 이 방법은 한 번의 순회로 모든 변경사항을 찾을 수 있었으며, `O(n)`의 시간 복잡도를 가져갈 수 있었습니다.
 
-<img src="assets/readme/image_diffing_1.png" width="720" alt="diffing 이미지" />
+<img src="./assets/readme/image_diffing_1.png" width="720" alt="diffing 이미지" />
 
 <br />
 
@@ -134,7 +134,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 한쪽 버전에서 노드가 추가되거나 삭제될 경우, 트리의 구조가 바뀌어버려 동시 순회 시 두 트리가 서로 다른 노드를 바라보는 문제가 발생했습니다.<br />
 이로 인해 변경사항이 없는 노드들마저 변경된 것으로 잘못 식별되는 이슈가 발생했습니다.
 
-<img src="assets/readme/image_diffing_2.png" width="720" alt="diffing 이미지" />
+<img src="./assets/readme/image_diffing_2.png" width="720" alt="diffing 이미지" />
 
 <br />
 
@@ -151,7 +151,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 동일한 `NodeId`를 가진 노드가 존재한다면, 그들의 프로퍼티를 비교하여 변경사항을 확인합니다.<br />
 이처럼 수정된 로직으로는 저희가 예상했던 정확한 변경사항을 도출할 수 있었습니다.
 
-<img src="assets/readme/image_diffing_3.png" width="720" alt="수정된 접근 방식 이미지" />
+<img src="./assets/readme/image_diffing_3.png" width="720" alt="수정된 접근 방식 이미지" />
 
 <br />
 
@@ -165,7 +165,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 ### 1) 초기 접근 방식: 피그마 JSON 데이터 저장 방식 고려
 
-<img src="assets/readme/image_json_data.png" width="720" alt="json 데이터 이미지" />
+<img src="./assets/readme/image_json_data.png" width="720" alt="json 데이터 이미지" />
 
 피그마 파일의 트리 구조는 피그마 파일 구조의 데이터들이 모두 들어가있기 때문에<br />
 `Document` - `Pages` - `Frames` - `Nodes` 순으로 중첩되고 많은 데이터를 포함하고 있습니다.
@@ -177,7 +177,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 ### 2) 해결책 : 피그마 파일 스키마 구조화
 
-<img src="assets/readme/image_database.png" width="720" alt="스키마 디자인 이미지"/>
+<img src="./assets/readme/image_database.png" width="720" alt="스키마 디자인 이미지"/>
 
 초반에는, `NodeSchema`를 트리 구조 그대로 저장했었습니다. `Frame` 내부에 있는 `Nodes` 데이터 안에 많은 정보들이 집중되어 있었기 때문에<br />
 한번에 트리 구조를 Database에 넣는 것은 MongoDB의 문서 용량 제한 문제나 데이터의 무결성을 유지하기도 어려웠습니다.
@@ -333,7 +333,7 @@ OAuth 2.0의 동작 과정은 사용자가 인증 서버에서 로그인하고 �
 이 과정에서 **Authorization Server**는 권한 부여 승인을 위해 자체 생성한 Authorization Code 를`redirectURL` 로 전달하고,<br />
 클라이언트에서 해당 Authorization Code로 보호된 자원에 요청할 수있는 AccessToken을 발급해주는 방식으로 동작합니다.
 
-<img src="assets/readme/image_OAuth_1.png" width="720" alt="OAuth 2.0 인증 동작방식 이미지" />
+<img src="./assets/readme/image_OAuth_1.png" width="720" alt="OAuth 2.0 인증 동작방식 이미지" />
 
 <br />
 
@@ -355,13 +355,13 @@ _**이 문제를 해결하기 위해 저희는 OAuth인증을 저희가 구축�
 서버에서 OAuth 2.0인증을 통해 AccessToken을 발급 받으면,<br />
 플러그인 클라이언트에게 발급받은 AccessToken을 전달해주는 방식이었습니다.
 
-<img src="assets/readme/image_call_URL.png" width="720" alt="서버 엔드포인트를 Call URL에 추가한 이미지" />
+<img src="./assets/readme/image_call_URL.png" width="720" alt="서버 엔드포인트를 Call URL에 추가한 이미지" />
 
 → Callback URL에 서버측 엔드포인트를 추가해 주어서 redirect 요청을 서버로 우회하여 받을 수 있게끔 하였습니다.
 
 <br />
 
-<img src="assets/readme/image_OAuth_2.png" width="720" alt="서버로 우회한 OAuth인증절차 시각화 이미지" />
+<img src="./assets/readme/image_OAuth_2.png" width="720" alt="서버로 우회한 OAuth인증절차 시각화 이미지" />
 
 _→ 서버로 redirectURL을 우회하여 AccessToken을 클라이언트 측으로 전달하는 로직을 시각화 한 것._
 
@@ -370,7 +370,7 @@ _→ 서버로 redirectURL을 우회하여 AccessToken을 클라이언트 측으
 이때 서버 측에서 모든 인증이 완료되어 AccessToken이 성공적으로 발급되었다면,<br />
 `Server Side Rendering` 으로 만들어진 로그인 완료 페이지를 응답으로 보내 UX를 개선했습니다.
 
-<img src="assets/readme/image_server_side.png" width="720" alt="서버사이드 렌더링 로그인 완료 페이지 이미지" />
+<img src="./assets/readme/image_server_side.png" width="720" alt="서버사이드 렌더링 로그인 완료 페이지 이미지" />
 
 <br />
 
@@ -391,7 +391,7 @@ _→ 서버로 redirectURL을 우회하여 AccessToken을 클라이언트 측으
 
 &emsp; 즉, 클라이언트는 일정 주기마다 서버에 요청을 계속 보내, 지속적으로 최신 데이터 상태를 유지할 수 있습니다.
 
-&emsp; <img src="assets/readme/image_polling.png" width="720" alt="Polling동작방식 이미지" />
+&emsp; <img src="./assets/readme/image_polling.png" width="720" alt="Polling동작방식 이미지" />
 
 <br />
 
@@ -418,16 +418,18 @@ _→ 서버로 redirectURL을 우회하여 AccessToken을 클라이언트 측으
 
 Fabric.js에서는 객체가 그려지는 `lower.canvas`와 사용자 이벤트를 처리하는 `upper.canvas`가 분리되어 있는데<br /> 이벤트 처리를 담당하는 `upper.canvas` 에 문제가 있다고 판단했습니다.
 
-<img src="assets/readme/image_canvas.png" width="720" alt="캔버스 문제 원인 이미지"/>
+<img src="./assets/readme/image_canvas.png" width="720" alt="캔버스 문제 원인 이미지"/>
 
 개발자 모드 layer 탭에서 확인한 결과 `upper.canvas`가 두번 생성되어 사용자 이벤트가 제대로 전달되지 않았다는 것을 가정하고<br />
 `canvas`가 반복적으로 렌더되는 부분을 확인했습니다.
 
 <br />
 
-### 2) 왜 `upper.canvas` 가 두 번 생성이 되고있을까?
+### 2) 문제 해결
 
-React.StrictMode로 인해 useEffect가 2번 실행되어서 upper.canvas가 두 번 생성되어서 이로인해 사용자 이벤트가 lower.canvas 객체로 제대로 전달되지 않는 문제ㅏ 발생 함수 시절
+#### 왜 `upper.canvas` 가 두 번 생성이 되고있을까?
+
+React.StrictMode로 인해 useEffect가 2번 실행되어서 upper.canvas가 두 번 생성되어서 이로인해 사용자 이벤트가 lower.canvas 객체로 제대로 전달되지 않는 문제 발생 함수 시절
 fabric.js 캔버스의 sideEffect 처리를 하지 않아 발생한 문제로 판단하여서 언마운트시 캔버스가 초기화 되도록 fabric.js 의 `dispose` 메서드를 활용하여서 클리어 함수 로직을 추가하였습니다.
 
 `.dispose` : `.clear` + 캐시 데이터까지 모두 삭제하는 메서드
@@ -447,30 +449,171 @@ useEffect(() => {
 }, []);
 ```
 
-| sideEffect 처리 전                                                                          | sideEffect 처리 후                                                                          |
-| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| <img src="assets/readme/image_canvas_side_effect_1.png" alt="side effect 처리 전 이미지" /> | <img src="assets/readme/image_canvas_side_effect_2.png" alt="side effect 처리 전 이미지" /> |
+| sideEffect 처리 전                                                                            | sideEffect 처리 후                                                                            |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| <img src="./assets/readme/image_canvas_side_effect_1.png" alt="side effect 처리 전 이미지" /> | <img src="./assets/readme/image_canvas_side_effect_2.png" alt="side effect 처리 전 이미지" /> |
 
 **→ 사이드 이펙트 처리함으로서 `upper.canvas` 가 중복으로 생성되는 문제를 해결하고, 캔버스 이벤트가 정상적으로 `lower.canvas` 객체에게 전달되도록 했습니다.**
 
 <br />
 
-## 2. 피그마에 렌더되어있는 순서를 어떻게 보장할수 있을까?
+## 🫨 렌더링 순서가 뒤죽박죽!
+
+### 1) 문제 원인
 
 피그마에서는 z-index를 디자인 요소의 중첩 구조에 따라서 구분하는데 서버로부터 전달받은 JSON 파일에서는<br />
 실제 중첩된 구조와 다르게 평탄화 되있어 실제 피그마 디자인과 순서와 다르게 나중에 렌더되어<br />
 앞에 있어야 할 디자인 요소가 **뒤로 가려져 보이지 않는 문제가 발생**했습니다.
 
-→ 실제 피그마에서 중첩되어있는 구조를 보장하면서 평탄화 하기위해 평탄화를 위한 탐색법으로<br />
-DFS에서 BFS로 변경해 실제 피그마 디자인 중첩 구조대로 평탄화 할 수 있었습니다.
+### 2) 문제 해결
+
+실제 피그마에서 중첩되어있는 구조를 보장하면서 평탄화 하기위해 평탄화를 위한 탐색법으로<br />
+`DFS`에서 `BFS`로 변경해 실제 피그마 디자인 중첩 구조대로 평탄화 할 수 있었습니다.
 
 <br />
 
-### 3. 평탄화 되어있는 디자인 요소의 순서를 보장 할 수 없을까?
+## 👨🏻‍🎨 렌더링을 했는데 피그마의 디자인 화면과 다르다?!
+
+### 1) 문제 원인
 
 평탄화 되어있는 디자인 요소 데이터를 순서대로 렌더하기 위해서 json 데이터를 순회하려 더했으나 객체에서는 객체가 생성된 순서를 보장하지 않으므로 실제 디자인과 다르게 렌더 되는 문제가 발생했습니다.
 
-→ 평탄화한 디자인 요소의 순서를 보장하기 위해서 기존 Object 형태에서 Map 형태로 변경하여서 디자인 요소를 평탄화한 순서대로 렌더하게 하여서 실제 피그마 디자인상에 중첩되어있는 순서대로 디자인 요소를 렌더 할 수 있었습니다.
+### 2) 문제 해결
+
+평탄화한 디자인 요소의 순서를 보장하기 위해서 기존 Object 형태에서 Map 형태로 변경하여서 디자인 요소를 평탄화한 순서대로 렌더하게 하여서 실제 피그마 디자인상에 중첩되어있는 순서대로 디자인 요소를 렌더 할 수 있었습니다.
+
+<br/>
+
+## 🦥 diffing 응답속도가 너무 느려요! (feat. Testing)
+
+### 1) 문제 원인
+
+유저가 선택한 페이지의 diffing 결과를 가져오는 것은 문제가 되지 않았지만, 예상보다 변경사항을 도출하고, 유저에게 응답하기까지의 시간이 너무 길었습니다.
+
+기존의 변경사항 제공 로직은 다음과 같습니다.
+
+1. 클라이언트에서 요청이 들어오면, endpoint에서 diffing result를 찾기 위한 필요한 정보를 추출합니다.
+2. 해당 정보를 가지고 DB에서 저장된 결과가 있는지 탐색합니다.
+3. DB에 결과가 있다면 해당 결과를 가져와서 응답합니다.
+4. 없다면 diffing을 실행해서 해당 결과를 DB에 저장하고 결과를 응답합니다.
+
+<br/>
+
+예시)<br/>
+유저가 `v1`과 `v2`를 선택하고 비교하고 싶은 페이지로 `page1`을 선택했다고 가정하겠습니다.
+
+v1의 `page1`과 v2의 `page1`을 diffing 합니다.<br/>
+page1은 `frame1`, `frame2`, `frame3` 총 3개의 프레임을 갖고 있습니다.<br/>
+diffing 결과,<br/>
+**_frame1에는 변경사항이 있지만 frame2와 frame3는 변경사항이 없습니다._**
+
+이때 서버는 page1에 대한 diffingResult로 frame1, frame2, frame3을 전부 보내는 것이 아니라,<br/>**frame1의 서브트리와, frame1의 내부 변경 정보**만 전달합니다.
+
+DB에 저장되는 형태는 이미지와 같이 frames의 값에 해당 페이지의 프레임들 중에서 변경사항이 있는 frame의 id만 값으로 할당된 형태입니다.<br/>
+(differences 필드에는 프레임의 하위 요소들의 변경사항 정보들이 저장됩니다.)
+
+<img src="./assets/readme/image_diffing_result_data.png" width="720" />
+
+<br />
+그러나 클라이언트 측에서 변경사항을 유저에게 렌더링하려면 변경사항 정보만으로는 부족합니다.<br />
+<br />
+변경사항이 있는 프레임 원본을 그대로 렌더링한 뒤에 그곳에서 변경사항이 있는 요소들을 표시하는 프로세스이기 때문에, 변경사항이 있는 프레임들의 원본 서브트리도 함께 보내주어야 했습니다.
+
+<br />
+
+따라서 DB에는 변경사항이 있는 frame의 id들을 배열의 형태로 저장하지만,<br />
+클라이언트에게 응답을 보낼 때는 해당 frame id들을 순회하면서 id에 해당하는 프레임 서브트리로 치환 후, 클라이언트에게 응답하는 과정을 거치게 됩니다.<br />
+<br />
+정리하자면 diffingResult를 응답하는 과정은 크게 `두가지`로 진행됩니다.
+
+1. diffing을 해서 변경사항 정보를 수집하는 과정
+2. 변경사항이 있는 frame들의 id를 가지고 서브트리를 탐색 후 치환하는 과정
+
+<br/>
+
+위 로직을 저희는 `Postman`을 사용해서 `테스트`를 진행해보았습니다.
+
+- **before-version의 크기와 after-version의 크기 : `5.8mb`, `8.1mb`**
+- **10개의 다른 버전의 다른 페이지, `delay`는 `100ms`로 설정**
+
+  <img src="./assets/readme/image_postman_test.png" width="720" />
+
+<br />
+
+#### 테스트 결과
+
+  <img src="./assets/readme/image_test_result.png" width="720" />
+
+- 평균 응답시간 : **`1951ms`**
+- 첫 응답부터 마지막 응답까지 걸린 시간: **`20s 811ms`**
+
+<br />
+
+그러나, 해당 결과에서 한 가지 **_이상한 점_** 을 발견할 수 있었습니다.
+
+<img src="./assets/readme/image_strange_result.png" width="720" />
+응답에 따른 시간 차가 매우 클 때가 있었다는 것 입니다.
+
+왜 이런 것인지 분석해보니 시간이 압도적으로 적게 드는 요청은
+
+**_“유저가 선택한 페이지에 변경사항이 없는 경우”_** 였습니다.
+
+변경사항이 없는 경우에는 diffingResult의 frames에 frameID가 존재하지 않을 것이고, 이는 diffingResult를 보내는 두 가지 큰 과정 중
+
+**_“변경사항이 있는 frame들의 id를 가지고 서브트리로 치환하는 과정”_** 을 생략한다는 것을 의미하고,<br/>
+이는 곧 **_“변경사항이 있는 frame들의 id를 가지고 서브트리로 치환하는 과정”_** 을 처리하는 데 시간이 오래 걸린다는 것을 의미했습니다.
+
+직접 확인해보니
+
+<img src="./assets/readme/image_test_time.png" />
+
+1. 해당 결과를 찾아서 가져오는데 걸리는 시간: **`평균 70ms`**
+2. 변경사항이 있는 frame들의 id를 서브트리로 치환하는 시간: **`평균 7000ms`**
+
+<br />
+저희의 생각이 맞았습니다.<br />
+실제로 diffing을 하는 시간보다 frame들을 서브트리로 치환하는 데 걸리는 시간이 훨씬 더 오래 걸렸습니다.
+
+<br />
+
+그렇다면 **_“해당 서브트리 치환 과정이 왜 필요한가?”_** 를 생각해본 결과, diffingResult를 DB에 저장할 때 frame의 ID값으로만 저장을 하기 때문에, 실제 프레임 내용을 가져와야 했기 때문이었습니다.
+
+그렇다고 frame 서브트리를 스키마 없이 중첩된 데이터를 그대로 값으로 넣기에는 데이터 모델의 복잡성이 증가하기 때문에 ID로 넣어주었습니다.
+
+이에 따라 저희는
+
+**_“그렇다면 서브트리 치환 과정을 하지 않을 수 있는 방법은 없을까?”_**<br/>
+를 고민하기 시작했습니다.
+
+<br />
+
+### 2) 문제 해결
+
+저희는 아래와 같은 아이디어를 도출했습니다.
+
+**_“만약, diffing을 진행하면서 요소에 변경사항이 있을 경우 해당 요소의 frame을 바로 diffingResult에 넣어주고,<br />
+사용자에게 응답을 보내준다면 치환과정을 생략할 수 있지 않을까?”_**<br />
+
+물론 그 말은 DB에 diffingResult를 저장하지 않기 때문에 유저의 요청마다 중복된 요청이라도 diffing을 해야하지만,<br />프레임들을 서브트리로 치환하는 시간이 사라진다는 것이 사용자 경험으로도 좋게 다가올 것 같았습니다.
+
+<br />
+
+**_따라서 로직을 수정하고 테스팅을 진행해보았습니다._**
+
+**`Result 스키마`를 삭제** 하고 `diffingResult`를 바로 클라이언트에게 응답으로 보냄으로써
+
+<img src="./assets/readme/image_improved_result.png" width="720" />
+
+1. 매 응답마다 새로 diffing을 할 경우 걸리는 시간: **`평균 800ms`**
+2. 첫 응답부터 마지막 응답까지 걸린 시간: **`8s 811ms`**
+
+<br />
+
+기존 DB에 저장하는 방식과, 개선한 로직의 테스팅 결과를 분석해본 결과
+
+<img src="./assets/readme/image_diffing_speed.png" width="720" />
+
+#### 약 `2.5배` 정도의 성능 개선을 이루어 낼 수 있었습니다.
 
 <br />
 <br />
