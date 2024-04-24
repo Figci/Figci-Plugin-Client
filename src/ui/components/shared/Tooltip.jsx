@@ -23,9 +23,11 @@ const TooltipWrapper = styled.div`
   &::after {
     content: attr(data-tooltip);
     position: absolute;
+    z-index: 100;
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
+
     min-width: 200px;
     max-width: 300px;
     padding: 8px 12px;
@@ -35,8 +37,6 @@ const TooltipWrapper = styled.div`
     color: #ffffff;
     font-size: 0.75rem;
     font-weight: 500;
-
-    z-index: 100;
     opacity: 0;
     visibility: hidden;
     transition:
