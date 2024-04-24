@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Button from "../shared/Button";
-import Description from "../shared/Description";
 import Modal from "../shared/Modal";
 import Loading from "../shared/Loading";
 import ToastPopup from "../shared/Toast";
+import Information from "../shared/Information";
+import Tooltip from "../shared/Tooltip";
 
 import useProjectVersionStore from "../../../store/projectVersion";
 import useProjectStore from "../../../store/project";
@@ -16,6 +17,7 @@ import getAllVersions from "../../../services/getAllVersions";
 import getProjectKeyFromURI from "../../../utils/getProjectKeyFromURI";
 import isValidFigmaUrl from "../../../utils/isValidFigmaUrl";
 import postMessage from "../../../utils/postMessage";
+import shortCut from "../../../../assets/shortcut_key.png";
 
 function NewProject() {
   const navigate = useNavigate();
@@ -112,20 +114,20 @@ function NewProject() {
             </h1>
           </div>
           <label htmlFor="projectUrl" className="label">
-            Enter Figma Project URL
+            <div className="subtitle">
+              Enter Figma Project URL
+              <Tooltip message="The project URL links to the current Figma file. Click the Share button > Copy link in the top right popup, or use a shortcut to easily copy it." />
+            </div>
             <input
               id="projectUrl"
               defaultValue={project.projectUrl}
               placeholder="Please enter the url address. (e.g., www.figma.com/abc)"
               onChange={handleChangeInput}
             />
-            <Description
-              className="description"
-              size="medium"
-              align="left"
-              text="On Mac, press 'Command+L', on Windows, 'Ctrl+L' to copy the link!"
-            />
           </label>
+          <Information text="Check the image below and press the appropriate shortcut for your system to copy the Figma project URL!">
+            <img src={shortCut} className="content-shortcut" alt="shortcut" />
+          </Information>
           <Button
             handleClick={handleSubmitURI}
             usingCase="solid"
@@ -190,11 +192,17 @@ const ContentsWrapper = styled.div`
 
   label {
     height: 100%;
+  }
+
+  .subtitle {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
 
     color: #000000;
     font-size: 0.813rem;
     text-align: left;
-    line-height: 16px;
+    line-height: 14px;
     font-weight: 700;
   }
 
@@ -207,6 +215,15 @@ const ContentsWrapper = styled.div`
 
     width: 355px;
     bottom: 24px;
+  }
+
+  .question-mark {
+    width: 16px;
+    margin-left: 4px;
+  }
+
+  .content-shortcut {
+    width: 300px;
   }
 `;
 
