@@ -1,6 +1,6 @@
 figma.showUI(__html__, { width: 400, height: 540 });
 
-const differenceRectangleIdList = [];
+const differenceRectangleList = [];
 
 const CONSTANTS = {
   MODIFIED_FILLS: {
@@ -35,9 +35,24 @@ const isOwnProperty = (targetObject, targetProperty) => {
   return Object.prototype.hasOwnProperty.call(targetObject, targetProperty);
 };
 
-const focusScreen = (nodeIndex = 0) => {
-  const targetNodeId = differenceRectangleIdList[nodeIndex];
-  const targetNode = figma.getNodeById(targetNodeId);
+const isIncludeId = selectedNode => {
+  for (const rectangleNode of differenceRectangleList) {
+    if (rectangleNode.id === selectedNode.id) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const getNodeIndex = selectedNode => {
+  return differenceRectangleList.findIndex(
+    rectangleNode => rectangleNode.id === selectedNode.id,
+  );
+};
+
+const focusScreen = async (nodeIndex = 0) => {
+  const targetNode = differenceRectangleList[nodeIndex];
 
   figma.viewport.scrollAndZoomIntoView([targetNode]);
   figma.currentPage.selection = [targetNode];
@@ -87,7 +102,7 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
           break;
       }
 
-      differenceRectangleIdList.push(differenceRectangle.id);
+      differenceRectangleList.push(differenceRectangle);
 
       modifiedFrames[frameId].isNew = false;
     }
@@ -112,22 +127,20 @@ const renderDifferenceRectangle = (differences, modifiedFrames) => {
           "New frame, absent in the previous version!",
         );
 
-        differenceRectangleIdList.push(differenceRectangle.id);
+        differenceRectangleList.push(differenceRectangle);
       }
     }
   }
 
-  differenceRectangleIdList.reverse();
+  differenceRectangleList.reverse();
 };
 
 const clearRectangleNode = () => {
-  differenceRectangleIdList.forEach(rectangleNodeId => {
-    const rectangleNode = figma.getNodeById(rectangleNodeId);
-
+  for (const rectangleNode of differenceRectangleList) {
     rectangleNode.remove();
-  });
+  }
 
-  differenceRectangleIdList.length = 0;
+  differenceRectangleList.length = 0;
 };
 
 const formatTime = dateString => {
@@ -197,20 +210,15 @@ figma.ui.onmessage = async message => {
 
     renderDifferenceRectangle(differences, modifiedFrames);
 
-    focusScreen();
+    await focusScreen();
   }
 
   if (message.type === "PAGINATION_BUTTON") {
     const currentSelection = figma.currentPage.selection[0];
-    const differencesLength = differenceRectangleIdList.length;
+    const differencesLength = differenceRectangleList.length;
 
-    if (
-      currentSelection &&
-      differenceRectangleIdList.includes(currentSelection.id)
-    ) {
-      const currentIndex = differenceRectangleIdList.indexOf(
-        currentSelection.id,
-      );
+    if (currentSelection && isIncludeId(currentSelection)) {
+      const currentIndex = getNodeIndex(currentSelection);
 
       let nextIndex;
 
@@ -226,12 +234,12 @@ figma.ui.onmessage = async message => {
           differencesLength;
       }
 
-      focusScreen(nextIndex);
+      await focusScreen(nextIndex);
 
       return;
     }
 
-    focusScreen();
+    await focusScreen();
   }
 };
 
@@ -242,15 +250,14 @@ figma.on("selectionchange", () => {
     return;
   }
 
-  const differencesLength = differenceRectangleIdList.length;
+  const differencesLength = differenceRectangleList.length;
 
-  if (differenceRectangleIdList.includes(currentSelection.id)) {
+  if (isIncludeId(currentSelection)) {
     const differenceInformation = currentSelection.getPluginData(
       "differenceInformation",
     );
 
-    const currentFrameIndex =
-      differenceRectangleIdList.indexOf(currentSelection.id) + 1;
+    const currentFrameIndex = getNodeIndex(currentSelection) + 1;
 
     figma.ui.postMessage({
       type: "FRAME_PAGINATION",
@@ -309,6 +316,4 @@ figma.on("currentpagechange", () => {
 
 figma.on("close", () => {
   clearRectangleNode();
-
-  figma.closePlugin();
 });
