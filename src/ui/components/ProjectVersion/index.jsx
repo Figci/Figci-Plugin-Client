@@ -28,6 +28,7 @@ function ProjectVersion() {
   const [projectInformation, setProjectInformation] = useState({});
   const [selectedBefore, setSelectedBefore] = useState({});
   const [commonPageId, setCommonPageId] = useState("");
+  const [isClick, setIsClick] = useState(false);
 
   const { project, setProject } = useProjectStore();
   const { byDates, allDates } = useProjectVersionStore();
@@ -44,12 +45,14 @@ function ProjectVersion() {
     project.afterVersionId,
     commonPageId,
     projectInformation.accessToken,
+    isClick,
   );
 
   useEffect(() => {
-    if (diffingResult) {
+    if (diffingResult && isClick) {
       if (diffingResult.result === "error") {
         setToast({ status: true, message: diffingResult.message });
+        setIsClick(false);
 
         return;
       }
@@ -67,10 +70,11 @@ function ProjectVersion() {
       }
 
       postMessage("POST_DIFFING_RESULT", { differences, modifiedFrames });
+      setIsClick(false);
 
       navigate("/result");
     }
-  }, [diffingResult]);
+  }, [diffingResult, isClick]);
 
   const handleProjectInformation = ev => {
     setIsVersionLoading(true);
@@ -158,6 +162,7 @@ function ProjectVersion() {
     setPages(responseResult.content);
     setProject({ beforeVersionId: selectedBefore.beforeVersion });
     setCommonPageId(currentPageId);
+    setIsClick(true);
 
     setIsVersionLoading(false);
   };
