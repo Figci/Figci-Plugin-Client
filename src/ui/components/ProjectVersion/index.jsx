@@ -184,7 +184,7 @@ function ProjectVersion() {
         <Modal>
           <Loading
             title="Comparing versions!"
-            text="Comparison time varies\nwith file size and page count."
+            text="Large Figma files may take over\na minute to compare."
           />
         </Modal>
       )}
