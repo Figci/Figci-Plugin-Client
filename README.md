@@ -165,7 +165,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 <details><summary><b>🎥 Preview</b></summary>
 <p>
-<img src="src/assets/readme/gif_login.gif" width="720" alt="피그마 계정 로그인 gif"/>
+<img src="assets/readme/gif_login.gif" width="720" alt="피그마 계정 로그인 gif"/>
 </p>
 </details>
 → `OAuth 2.0` 를 통해 Figma 계정으로 로그인하여 `Aceess Token`을 요청합니다.
@@ -177,7 +177,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 <details><summary><b>🎥 Preview</b></summary>
 <p>
-<img src="src/assets/readme/gif_version.gif" width="720" alt="버전 선택 gif"/>
+<img src="assets/readme/gif_version.gif" width="720" alt="버전 선택 gif"/>
 </p>
 </details>
 
@@ -190,7 +190,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 <details><summary><b>🎥 Preview</b></summary>
 <p>
-<img src="src/assets/readme/gif_difference.gif" width="720" alt="변경 사항 시각화 gif"/>
+<img src="assets/readme/gif_difference.gif" width="720" alt="변경 사항 시각화 gif"/>
 </p>
 </details>
 
@@ -207,7 +207,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 | 새 버전 선택 하기                                                                           | 피그마로 이동하기                                                                               |
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <img src="src/assets/readme/gif_reversion.gif" width="max-content" alt="새 버전 선택 gif"/> | <img src="src/assets/readme/gif_open_figma.gif" width="max-content" alt="피그마에서 열기 gif"/> |
+| <img src="assets/readme/gif_reversion_figma.gif" width="max-content" alt="새 버전 선택 gif"/> | <img src="assets/readme/gif_open_figma.gif" width="max-content" alt="피그마에서 열기 gif"/> |
 | 현재 프로젝트의 **다른 버전 간의 차이점**을 확인할 수 있습니다.                             | 확인 중인 디자인 요소를 **피그마 앱**에서 확인 할 수 있습니다.                                  |
 
 </p>
@@ -220,7 +220,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 
 <details><summary><b>🎥 Preview</b></summary>
 <p>
-<img src="src/assets/readme/gif_pagination.gif" width="720" alt="페이지네이션 gif"/>
+<img src="assets/readme/gif_pagination.gif" width="720" alt="페이지네이션 gif"/>
 </p>
 </details>
 
@@ -238,7 +238,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 처음에는 Figma API를 통해 받은 두 서브 트리를 동시에 순회하면서, 같은 위치에 있는 노드들의 프로퍼티를 비교하여 차이점을 찾았습니다.<br />
 이 방법은 한 번의 순회로 모든 변경 사항을 찾을 수 있었으며, `O(n)`의 시간 복잡도를 가져갈 수 있었습니다.
 
-<img src="src/assets/readme/image_diffing_1.png" width="720" alt="diffing 이미지" />
+<img src="assets/readme/image_diffing_1.png" width="720" alt="diffing 이미지" />
 
 <br />
 
@@ -247,7 +247,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 한쪽 버전에서 노드가 추가되거나 삭제될 경우, 트리의 구조가 바뀌어버려 동시 순회 시 두 트리가 서로 다른 노드를 바라보는 문제가 발생했습니다.<br />
 이로 인해 변경 사항이 없는 노드들마저 변경된 것으로 잘못 식별되는 이슈가 발생했습니다.
 
-<img src="src/assets/readme/image_diffing_2.png" width="720" alt="diffing 이미지" />
+<img src="assets/readme/image_diffing_2.png" width="720" alt="diffing 이미지" />
 
 <br />
 
@@ -264,7 +264,7 @@ Git에서는 코드의 변경 사항을 초록색 또는 빨간색으로 표시�
 동일한 `NodeId`를 가진 노드가 존재한다면, 그들의 프로퍼티를 비교하여 변경 사항을 확인합니다.<br />
 이처럼 수정된 로직으로는 저희가 예상했던 정확한 변경 사항을 도출할 수 있었습니다.
 
-<img src="src/assets/readme/image_diffing_3.png" width="720" alt="수정된 접근 방식 이미지" />
+<img src="assets/readme/image_diffing_3.png" width="720" alt="수정된 접근 방식 이미지" />
 
 <br />
 
@@ -450,7 +450,7 @@ return convertedDocument;
 
 ### 1) 초기 접근 방식: 피그마 JSON 데이터 저장 방식 고려
 
-<img src="src/assets/readme/image_json_data.png" width="720" alt="json 데이터 이미지" />
+<img src="assets/readme/image_json_data.png" width="720" alt="json 데이터 이미지" />
 
 피그마 파일의 트리 구조는 피그마 파일 구조의 데이터들이 모두 들어가 있기 때문에 `Document` - `Pages` - `Frames` - `Nodes` 순으로 중첩되고 많은 데이터를 포함하고 있습니다.
 
@@ -460,7 +460,7 @@ return convertedDocument;
 
 ### 2) 해결 방안 모색 : 피그마 파일 스키마 구조화
 
-<img src="src/assets/readme/image_database.png" width="720" alt="스키마 디자인 이미지"/>
+<img src="assets/readme/image_database.png" width="720" alt="스키마 디자인 이미지"/>
 
 초반에는, `NodeSchema`를 트리 구조 그대로 저장했었습니다. `Frame` 내부에 있는 `Nodes` 데이터 안에 많은 정보들이 집중되어 있었기 때문에<br />
 한 번에 트리 구조를 Database에 넣는 것은 MongoDB의 문서 용량 제한의 문제나 데이터의 무결성을 유지하기도 어려웠습니다.
@@ -477,7 +477,7 @@ Node 데이터를 평탄화시킨 뒤 DB에 저장함으로 써 트리 구조의
 
 **피그마 속성 분류**<br />
 
-<img src="src/assets/readme/image_figma_data.png" width="720" alt="피그마 데이터"/>
+<img src="assets/readme/image_figma_data.png" width="720" alt="피그마 데이터"/>
 
 서버로부터 전달받은 Figma JSON 트리를 Fabric.js를 사용하여 캔버스에 렌더링해야 했습니다.<br />
 피그마에는 여러 가지 속성이 존재하였고 그중에 canvas로 렌더할 수 있는 속성을 분류하기 위해 피그마 내부 디자인 시스템에서 사용하는 **"시스템 속성"**과 실제 렌더에 관여하는 **"디자인 속성"**으로 나누어서 속성을 분류했습니다.
@@ -543,7 +543,7 @@ overrides: [ { id, overriddenFields },
 
 | 실제 배포된 Figci 서비스 Web 상의 비교 결과 페이지                                 |
 | ---------------------------------------------------------------------------------- |
-| <img src="src/assets/readme/image_web_preview.png" width="720" alt="web-preview"/> |
+| <img src="assets/readme/image_web_preview.png" width="720" alt="web-preview"/> |
 
 저희 서비스에서는 디자인 변경 요소를 표시하기 위해 이후 버전의 디자인 요소위에 변경된 영역과 변경 사항 텍스트가 겹쳐서 렌더링 되게 됩니다.
 
@@ -638,7 +638,7 @@ rectObject.on("mouseout", () => {
 >
 > clipPath 속성은 특정 영역을 잘라내어 그 영역 밖의 부분은 보이지 않게 하는 속성입니다.
 
-<img src="src/assets/readme/image_clippath.png" width="720" alt="clippath"/>
+<img src="assets/readme/image_clippath.png" width="720" alt="clippath"/>
 
 Figma 데이터에서 `clipsContent` 속성값을 확인하였습니다.<br />
 `clipsContent`가 true인 경우, 연결된 자식 노드를 찾아 `Fabric.js`객체로 변환하고<br /> `clipPath` 속성에 부모 노드를 추가하여 자식 노드와 부모 노드를 연결하였습니다.
@@ -655,7 +655,7 @@ OAuth 2.0의 동작 과정은 사용자가 인증 서버에서 로그인하고 �
 이 과정에서 **Authorization Server**는 권한 부여 승인을 위해 자체 생성한 Authorization Code 를`redirectURL`로 전달하고,<br />
 클라이언트에서 해당 Authorization Code로 보호된 자원에 요청할 수 있는 AccessToken을 발급해 주는 방식으로 동작합니다.
 
-<img src="src/assets/readme/image_OAuth_1.png" width="720" alt="OAuth 2.0 인증 동작방식 이미지" />
+<img src="assets/readme/image_OAuth_1.png" width="720" alt="OAuth 2.0 인증 동작방식 이미지" />
 
 <br />
 
@@ -677,13 +677,13 @@ _**이 문제를 해결하기 위해 저희는 OAuth인증을 저희가 구축�
 서버에서 OAuth 2.0인증을 통해 AccessToken을 발급받으면,<br />
 플러그인 클라이언트에게 발급받은 AccessToken을 전달해 주는 방식이었습니다.
 
-<img src="src/assets/readme/image_call_URL.png" width="720" alt="서버 엔드포인트를 Call URL에 추가한 이미지" />
+<img src="assets/readme/image_call_URL.png" width="720" alt="서버 엔드포인트를 Call URL에 추가한 이미지" />
 
 → Callback URL에 서버 측 엔드포인트를 추가해 주어서 redirect 요청을 서버로 우회하여 받을 수 있게 하였습니다.
 
 <br />
 
-<img src="src/assets/readme/image_OAuth_2.png" width="720" alt="서버로 우회한 OAuth인증절차 시각화 이미지" />
+<img src="assets/readme/image_OAuth_2.png" width="720" alt="서버로 우회한 OAuth인증절차 시각화 이미지" />
 
 _→ 서버로 redirectURL을 우회하여 AccessToken을 클라이언트 측으로 전달하는 로직을 시각화한 것._
 
@@ -692,7 +692,7 @@ _→ 서버로 redirectURL을 우회하여 AccessToken을 클라이언트 측으
 이때 서버 측에서 모든 인증이 완료되어 AccessToken이 성공적으로 발급되었다면,<br />
 `Server Side Rendering` 으로 만들어진 로그인 완료 페이지를 응답으로 보내 UX를 개선했습니다.
 
-<img src="src/assets/readme/image_server_side.png" width="720" alt="서버사이드 렌더링 로그인 완료 페이지 이미지" />
+<img src="assets/readme/image_server_side.png" width="720" alt="서버사이드 렌더링 로그인 완료 페이지 이미지" />
 
 <br />
 
@@ -712,7 +712,7 @@ _→ 서버로 redirectURL을 우회하여 AccessToken을 클라이언트 측으
 &emsp; 웹 소켓과 같은 특정한 프로토콜을 사용하지 않아도 아주 간단히 서버와 지속적인 커넥션을 유지하는 방법 입니다.
 &emsp; 즉, 클라이언트는 일정 주기마다 서버에 요청을 계속 보내, 지속해서 최신 데이터 상태를 유지할 수 있습니다.
 
-&emsp; <img src="src/assets/readme/image_polling.png" width="720" alt="Polling동작방식 이미지" />
+&emsp; <img src="assets/readme/image_polling.png" width="720" alt="Polling동작방식 이미지" />
 
 <br />
 
@@ -740,7 +740,7 @@ _→ 서버로 redirectURL을 우회하여 AccessToken을 클라이언트 측으
 
 Fabric.js에서는 객체가 그려지는 `lower.canvas`와 사용자 이벤트를 처리하는 `upper.canvas`가 분리되어 있는데<br /> 이벤트 처리를 담당하는 `upper.canvas`에 문제가 있다고 판단했습니다.
 
-<img src="src/assets/readme/image_canvas.png" width="720" alt="캔버스 문제 원인 이미지"/>
+<img src="assets/readme/image_canvas.png" width="720" alt="캔버스 문제 원인 이미지"/>
 
 개발자 모드 layer 탭에서 확인한 결과 `upper.canvas`가 두 번 생성되어 사용자 이벤트가 제대로 전달되지 않았다는 것을 가정하고<br />
 `canvas`가 반복적으로 렌더되는 부분을 확인했습니다.
@@ -778,7 +778,7 @@ useEffect(() => {
 
 | sideEffect 처리 전                                                                              | sideEffect 처리 후                                                                              |
 | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <img src="src/assets/readme/image_canvas_side_effect_1.png" alt="side effect 처리 전 이미지" /> | <img src="src/assets/readme/image_canvas_side_effect_2.png" alt="side effect 처리 전 이미지" /> |
+| <img src="assets/readme/image_canvas_side_effect_1.png" alt="side effect 처리 전 이미지" /> | <img src="assets/readme/image_canvas_side_effect_2.png" alt="side effect 처리 전 이미지" /> |
 
 **→ 사이드 이펙트 처리함으로서 `upper.canvas` 가 중복으로 생성되는 문제를 해결하고, 캔버스 이벤트가 정상적으로 `lower.canvas` 객체에게 전달되도록 했습니다.**
 
@@ -829,7 +829,7 @@ diffing 결과,<br/>
 DB에 저장되는 형태는 이미지와 같이 frames의 값에 해당 페이지의 프레임 중에서 변경 사항이 있는 frame의 id만 값으로 할당된 형태입니다.<br/>
 (differences 필드에는 프레임의 하위 요소들의 변경 사항 정보들이 저장됩니다.)
 
-<img src="./src/assets/readme/image_diffing_result_data.png" width="720" />
+<img src="assets/readme/image_diffing_result_data.png" width="720" />
 
 <br />
 그러나 클라이언트 측에서 변경 사항을 사용자에게 렌더링하려면 변경 사항 정보만으로는 부족합니다.<br />
@@ -855,13 +855,13 @@ DB에 저장되는 형태는 이미지와 같이 frames의 값에 해당 페이�
 - **before-version의 크기와 after-version의 크기 : `5.8mb`, `8.1mb`**
 - **10개의 다른 버전의 다른 페이지, `delay`는 `100ms`로 설정**
 
-  <img src="./src/assets/readme/image_postman_test.png" width="720" />
+  <img src="assets/readme/image_postman_test.png" width="720" />
 
 <br />
 
 #### 테스트 결과: diffing 결과를 바로 전송하는 방식으로 변경 후 속도 개선 확인
 
-  <img src="./src/assets/readme/image_test_result.png" width="720" />
+  <img src="assets/readme/image_test_result.png" width="720" />
 
 - 평균 응답시간 : **`1951ms`**
 - 첫 응답부터 마지막 응답까지 걸린 시간: **`20s 811ms`**
@@ -870,7 +870,7 @@ DB에 저장되는 형태는 이미지와 같이 frames의 값에 해당 페이�
 
 그러나, 해당 결과에서 한 가지 **_이상한 점_** 을 발견할 수 있었습니다.
 
-<img src="./src/assets/readme/image_strange_result.png" width="720" />
+<img src="assets/readme/image_strange_result.png" width="720" />
 응답에 따른 시간 차가 매우 클 때가 있었다는 것입니다.
 
 왜 이런 것인지 분석 해보니 시간이 압도적으로 적게 드는 요청은
@@ -884,7 +884,7 @@ DB에 저장되는 형태는 이미지와 같이 frames의 값에 해당 페이�
 
 직접 확인해보니
 
-<img src="./src/assets/readme/image_test_time.png" />
+<img src="assets/readme/image_test_time.png" />
 
 1. 해당 결과를 찾아서 가져오는 데 걸리는 시간: **`평균 70ms`**
 2. 변경 사항이 있는 frame의 id를 서브 트리로 치환하는 시간: **`평균 7000ms`**
@@ -919,7 +919,7 @@ DB에 저장되는 형태는 이미지와 같이 frames의 값에 해당 페이�
 
 **`Result 스키마`를 삭제** 하고 `diffingResult`를 바로 클라이언트에게 응답으로 보냄으로써
 
-<img src="./src/assets/readme/image_improved_result.png" width="720" />
+<img src="assets/readme/image_improved_result.png" width="720" />
 
 1. 매 응답마다 새로 diffing을 할 경우 걸리는 시간: **`평균 800ms`**
 2. 첫 응답부터 마지막 응답까지 걸린 시간: **`8s 811ms`**
@@ -928,7 +928,7 @@ DB에 저장되는 형태는 이미지와 같이 frames의 값에 해당 페이�
 
 기존 DB에 저장하는 방식과, 개선한 로직의 테스팅 결과를 분석해본 결과
 
-<img src="./src/assets/readme/image_diffing_speed.png" width="720" />
+<img src="assets/readme/image_diffing_speed.png" width="720" />
 
 #### 약 `2.5배` 정도의 성능 개선을 이루어 낼 수 있었습니다.
 
